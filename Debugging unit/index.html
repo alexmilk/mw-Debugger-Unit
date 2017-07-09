@@ -3,149 +3,14 @@
 
 <head>
     <title>HLS.JS TEST - Disney</title>
-    <style>body {
-        margin: 0;
-        padding-top: 50px;
-        background-color: white !important;
-    }
-    .navbar {
-        overflow: hidden;
-        padding-bottom: 5px;
-        background-color: #333;
-        border-bottom: solid;
-        border-bottom-width: 2px;
-        box-shadow: 0px 3px 15px #888888;
-        border-bottom-color: greenyellow;
-        position: fixed;
-        /* Set the navbar to fixed position */
-        top: 0;
-        /* Position the navbar at the top of the page */
-        width: 100%;
-        /* Full width */
-        height: 30px;
-        z-index: 2;
-    }
-    /* Links inside the navbar */
-
-    .navbar li {
-        font-family: Arial;
-        font-size: smaller;
-        float: left;
-        display: block;
-        height: 30px;
-        color: #f2f2f2;
-        padding: 10px 16px;
-        text-decoration: none;
-        cursor: pointer;
-    }
-    .navbar li:hover {
-        background-color: #3e8e41;
-        color: #f2f2f2;
-    }
-    .dropbtn {
-        background-color: #333;
-        color: white;
-        padding: 10px 16px;
-        font-size: smaller;
-        border: none;
-        cursor: pointer;
-    }
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        height: 30px;
-        cursor: pointer;
-    }
-    .dropdown-content {
-        display: none;
-        font-family: Arial;
-        color: #f2f2f2;
-        font-size: smaller;
-        position: absolute;
-        background-color: #333;
-        cursor: hand;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 4;
-        margin-top: -5px;
-    }
-    .dropdown-content a {
-        color: #f2f2f2;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        cursor: hand;
-    }
-    .dropdown-content a:hover {
-        background-color: #3e8e41
-    }
-    .dropdown:hover .dropdown-content {
-        display: block;
-        position: fixed;
-    }
-    .dropdown:hover .dropbtn {
-        background-color: #3e8e41;
-    }
-    .greenText {
-        color: lawngreen;
-    }
-    .texts {
-        font-family: Verdana;
-    }
-    #analyticsLog {
-        float: right;
-        width: 558px;
-        height: 400px;
-        margin-top: 13px;
-        background-color: black;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        border: 1px solid black;
-        font-family: Arial;
-        padding: 5px;
-        font-size: 11px;
-        word-wrap: break-word;
-    }
-    .propertiesText {
-        font-family: Arial !important;
-        font-size: small;
-    }
-    .containerLeft {
-        width: 558px;
-        height: 120px;
-        float: left;
-        border-width: 0px;
-        border-color: #0a0a0a;
-        border-style: solid;
-        box-sizing: border-box;
-        padding-left: 15px;
-    }
-    .containerRight {
-        width: 555px;
-        height: 120px;
-        float: right;
-        border-width: 0px;
-        border-color: #0a0a0a;
-        border-style: solid;
-        box-sizing: border-box;
-        padding-left: 5px;
-        text-align: right;
-    }
-    #appendStats a {
-        color: red;
-    }
-    pre {
-        white-space: pre-wrap;       /* css-3 */
-        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    }
-    </style>
     <!--Scripts sections-->
     <script src="http://player.kaltura.com/resources/jquery/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="/mwEmbed/mwEmbedLoader.php/p/1750922/sp/175092200/embedIframeJs/uiconf_id/38602131/partner_id/1750922"></script>
+    <link rel="stylesheet" href="mainStyles.css">
 </head>
 
-<body style="background-color: #FFFFFF;">
+<body>
 
 <div class="navbar">
     <li>Home</li>
@@ -177,14 +42,13 @@
     </div>
 
 <!--Player main div-->
-<div id="details" style="width: 1125px; height: 180px; margin: auto; border-width: 1px; border-style: dotted; border-color: black; box-sizing: border-box; position: relative; z-index: 1; padding: 0; padding-left: 0">
-
-<div class="containerLeft">
-    <h2 class="texts">HLS.JS Disney test</h2>
-    <p id="uiconf" class="propertiesText"></p><br>
-    <p id="entrydit" class="propertiesText"></p><br>
-    <p id="loadTime" class="propertiesText"></p>
-    <p id="tinyUrl" class="propertiesText">Tiny link: </p>
+<div id="topHeaderDiv">
+    <div class="containerLeft">
+        <h2 class="texts">HLS.JS Disney test</h2>
+        <p id="uiconf" class="propertiesText"></p><br>
+        <p id="entrydit" class="propertiesText"></p><br>
+        <p id="loadTime" class="propertiesText"></p>
+        <p id="tinyUrl" class="propertiesText">TinyURL: </p>
     </div>
 
 <div class="containerRight">
@@ -195,53 +59,24 @@
         ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
     </script>
     </div>
-
-    </div>
+</div>
     <br>
     <!--The main section Player + Stats-->
     <div style="width:1125px; height: 335px; margin: auto;">
     <!--Main player DIV-->
-    <div id="kPlayer_ifp"
-         style="width: 560px; height: 320px; float: left; border-width: 1px; border-style: solid; border-color: black; box-sizing: border-box;"
-         itemprop="video" itemscope
-         itemtype="http://schema.org/VideoObject">
-        <span itemprop="name" content="Mad Max - Fury Road"></span>
-        <span itemprop="description" content=""></span>
-        <span itemprop="duration" content="153"></span>
-        <span itemprop="thumbnail"
-              content="http://cfvod.kaltura.com/p/1467261/sp/146726100/thumbnail/entry_id/1_p99ps6y0/version/100032/acv/531"></span>
-        <span itemprop="width" content="560"></span>
-        <span itemprop="height" content="315"></span>
-    </div>
+    <div id="kPlayer_ifp" itemprop="video" itemscope></div>
     <!--Small analytics log DIV-->
-    <div id="appendStats" style="background-color: black;width: 555px; height: 320px; font-family: Arial; color: white; font-size: smaller; height: 320px; overflow-x: hidden !important; font-size: smaller; float: right; word-wrap: break-word; counter-reset: line; text-align: left; margin-top: 0; border-width: 1px; border-style: dotted; border-color: black; padding-top: 5px; padding-left: 5px; padding-bottom: 5px; margin-bottom: 0; box-sizing: border-box;">
-    </div>
-
-        <script>
-            $("#analyticsLog:contains('onAdsManagerLoaded')").css("color", "lawngreen");
-        </script>
-    </div>
+    <div id="appendStats"></div></div>
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
-    <div id="new"
-         style="width: 1125px; height: auto; margin: auto; text-align: left; border-width: 1px; border-style: dotted; border-color: black; padding-top: 5px; padding-left: 5px; padding-bottom: 5px; box-sizing: border-box;">
-        <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px;"
-                onclick=doPlay()>Force Play
-        </button>
-        <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px;"
-                onclick=doStop()>Force Stop
-        </button>
-        <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px;"
-                onclick=getTiny()>get Tiny
-        </button>
-        <button type="button" id="getSource" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px;">get Sources
-        </button>
-        <button type="button" id="getCaptions" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px;">get Captions
-        </button>
-        <button type="button" onclick="embed();" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; margin-right: 10px; float: left;">Reload player</button>
+    <div id="mainControlDiv">
+        <button type="button" class="btn" onclick=doPlay()>Force Play</button>
+        <button type="button" class="btn" onclick=doStop()>Force Stop</button>
+        <button type="button" id="getSource" class="btn">get Sources</button>
+        <button type="button" id="getCaptions" class="btn">get Captions</button>
+        <button type="button" onclick="embed();" class="btn" style="float: left;">Reload player</button>
 
-        <br>
-        <h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
+        <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
             <input style="width: 380px;" type="text" id="adInput" placeholder="Input entry id"/>
             <input style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px" type="submit" onclick="setEntry();"/>
@@ -249,19 +84,17 @@
         <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
         <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
             <input style="width: 380px;" type="text" id="ksInput" placeholder="Input valid KS"/>
-            <input style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5pxpx" type="submit" onclick="setKS();"/>
+            <input style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5px" type="submit" onclick="setKS();"/>
         </form>
         <p style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</p>
-        <input style="width: 380px;" type="text" id="adTagId" /><span><button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
+        <input style="width: 380px;" type="text" id="adTagId" /><span>
+        <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
     </button></span>
     </div><br>
     <!--JSON Config DIV-->
 <div style="width:1125px; height: 410px; margin: 0 auto;">
     <p style="font-size: small; font-family: Arial; margin: 0;">Player's JSON config:</p>
-    <pre id="appendHtml"
-         style="width: 558px; height: 400px; float: left; counter-reset: line; text-align: left; border-width: 1px; border-style: dotted; overflow-x:scroll; border-color: black; padding-top: 5px; padding-left: 5px; padding-bottom: 5px; margin-bottom: 10px; box-sizing: border-box;">
-    </pre>
-
+    <pre id="appendJSON"></pre>
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
 
@@ -361,7 +194,7 @@
                 var kdp = document.getElementById(playerId);
                 kdp.kBind('playerReady', function () {
                     $.kPlayer = document.kPlayer_ifp_ifp;
-                    $("#appendHtml").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
+                    $("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
                     $(".mw-debug-info").append(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.debugInfo);
                     return false;
                 })});
