@@ -113,6 +113,7 @@ body {
     width: 1125px;
     height: auto;
     margin: auto;
+    display: none;
     text-align: left;
     border-width: 1px;
     border-style: dotted;
@@ -131,6 +132,7 @@ body {
     border-color: black;
     box-sizing: border-box;
     position: relative;
+    display: none;
     z-index: 1;
     padding: 0;
     padding-left: 0
@@ -185,6 +187,7 @@ body {
     text-align: left;
     margin-top: 0;
     border-width: 1px;
+    display: none;
     border-style: dotted;
     border-color: black;
     padding-top: 5px;
