@@ -11,12 +11,18 @@
 
 <body>
 
+<div id="errorBar">
+    <p>An error has been logged on the player</p><button id="okError" style="float: left; margin-top: 10px; margin-left: 10px">OK</button>
+</div>
 <div class="navbar">
+    <div style="float: left">
     <li>Home</li>
     <div class="dropdown">
     <button class="dropbtn">Functions</button>
         <div class="dropdown-content">
         <a onclick="embed()">Reload player</a>
+        <a onclick="getActiveBitrate()">Get Current Bitrate</a>
+
         </div>
     </div>
     <div class="dropdown">
@@ -37,7 +43,15 @@
             <a href="#" id="hideControls">Hide controls bar</a>
         </div>
     </div>
-
+    </div>
+    <div style="float: right; height: 25px; width: 300px; padding-top: 6px; padding-right: 30px; text-align: right">
+    <!--<input type="text" placeholder="Search anything" style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; position: absolute;">-->
+    <!--<input type="image" src="search-icon-white-hi.png" alt="Click to search" style="width: 20px; height: 20px;"/>-->
+        <form id="searchField" onsubmit="return false;">
+            <input style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; margin-right: 5px" type="text" id="searchInput" placeholder="Search anything"/>
+            <input type="image" src="search-icon-white-hi.png" style="width: 20px; height: 20px; position: absolute" onclick="searchSite();" alt="Click to search"/>
+        </form>
+    </div>
     </div>
 
 <!--Player main div-->
@@ -65,15 +79,17 @@
     <!--Main player DIV-->
     <div id="kPlayer_ifp" itemprop="video" itemscope></div>
     <!--Small analytics log DIV-->
-    <div id="appendStats"></div></div>
+    <pre id="appendStats"></pre></div>
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
     <div id="mainControlDiv">
+        <button type="button" onclick="changeEmbed();" class="btn" style="float: left;">Change Embed code</button>
         <button type="button" class="btn" onclick=doPlay()>Force Play</button>
         <button type="button" class="btn" onclick=doStop()>Force Stop</button>
         <button type="button" id="getSource" class="btn">get Sources</button>
         <button type="button" id="getCaptions" class="btn">get Captions</button>
         <button type="button" onclick="embed();" class="btn" style="float: left;">Reload player</button>
+
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
@@ -133,8 +149,12 @@
             kdp.kBind('doPlay', function () {
                 $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
             });
-            kdp.kBind('mediaError', function () {
-                $("#analyticsLog").append("Media Error\n<br>").addClass("greenText");
+            kdp.kBind('mediaError', function (playerError) {
+                $("#errorBar").slideDown(1000);
+                $("#errorBar p").append(" - The error "+ playerError.message);
+            });
+            $('#okError').click(function (){
+              $('#errorBar').slideUp(1000);
             });
             kdp.kBind('bumperStarted', function () {
                 $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
@@ -226,19 +246,23 @@
 
         });
         function goToVast() {
+            window.open("https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=" + document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
+            }
+        function getActiveBitrate(){
             let k = document.kPlayer_ifp_ifp;
-            let vastWindow = window.open("https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=" + k.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
-            $(vastWindow).ready(function() {
-                document.getElementById('test-ad-button').click();
-            })};
-
+            let k2 = k.document.getElementsByClassName('persistentNativePlayer nativeEmbedPlayerPid');
+            let sumk = k2.pid_kPlayer_ifp.webkitVideoDecodedByteCount / 1000;
+            alert(sumk);
+        }
+        function downloadJSON() {
+            let jsonContent = document.getElementById('appendJSON');
+            window.open('_blank').document.write(jsonContent.innerHTML);
+        }
         $("#getSource").click(function (){
             var playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
             for (var i = 0; i < playerSources.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
-            }
-        });
-
+            }});
         $("#getCaptions").click(function (){
             var playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
             for (var i = 0; i < playerCaptions.length; i++) {
@@ -250,17 +274,13 @@
             $( this ).fadeIn( 50 );
         });
         $( document ).ready( function(){
-          $('#topHeaderDiv').fadeIn(1600);
-            $('#appendStats').fadeIn(1600);
-            $('#kPlayer_ifp').fadeIn(1600)
-            $('#mainControlDiv').fadeIn(1600)
+          $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(1600);
         });
     </script>
 
     <!--Main embed script-->
     <script>
         function embed(){
-        var preroll = "https://ads.e-planning.net/eb/4/175df/player/preroll?ct=1&o=v&ma=1&vv=3";
         mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
         mw.setConfig("debug", true);
         mw.setConfig("debugTarget", "analyticsLog");
@@ -287,7 +307,7 @@
                     "prerollUrl": null,
                     "plugin": false
                 },
-                "debugInfo.isVisible": true,
+                "debugInfo.isVisible": false,
                 "disableHLSOnJs": false
             },
             "cache_st": 1466954509,
@@ -313,7 +333,7 @@
     <button type="button" style="border-width: 0; border-radius: 8px; margin-top: 2px; margin-bottom: 5px; float: right;"
             onclick=$("#analyticsLog").empty();>Clear log</button>
     <button type="button" style="background-color: yellowgreen; margin-left: 465px; border-width: 0; border-radius: 8px; margin-top: 2px; margin-bottom: 5px;"
-            onclick=appendConfig()>Download JSON</button>
+            onclick=downloadJSON()>Download JSON</button>
 </div>
 <div style="clear: both;"></div>
 <div style="width: 100%; margin-bottom: 0; bottom: 0; border-top-width: 2px; border-top-color: greenyellow; border-top-style: solid; position: static; background-color: #333; height: 25px; text-align: center; padding-bottom: 7px;">
