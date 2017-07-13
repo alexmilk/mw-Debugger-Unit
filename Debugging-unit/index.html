@@ -94,17 +94,19 @@
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
             <input style="width: 380px;" type="text" id="adInput" placeholder="Input entry id"/>
-            <input style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px" type="submit" onclick="setEntry();"/>
+            <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px" type="submit" onclick="setEntry();"/>
         </form>
         <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
         <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
             <input style="width: 380px;" type="text" id="ksInput" placeholder="Input valid KS"/>
-            <input style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5px" type="submit" onclick="setKS();"/>
+            <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5px" type="submit" onclick="setKS();"/>
         </form>
         <p style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</p>
         <input style="width: 380px;" type="text" id="adTagId" /><span>
-        <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
+        <button type="button" style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
     </button></span>
+        <select id="adSlotSelector" name="Select an ad tag" size="1">
+        </select>
         <div id="customEmbedParams">
             <form onsubmit="return false;">
                 <input style="width: 100px; margin-bottom: 10px" type="text" placeholder="Partner Id"/><br>
@@ -159,11 +161,11 @@
             });
             kdp.kBind('playerError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar p").append(" - The error " + errorEvent.message);
+                $("#errorBar p").append(" - " + errorEvent.message);
             });
             kdp.kBind('mediaErrorError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar p").append(" - The error " + errorEvent.message);
+                $("#errorBar p").append(" - " + errorEvent.message);
             });
             //OK button handler
             $('#okError').click(function () {
@@ -304,7 +306,7 @@
         function getActiveSource() {
             const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
             const currentSource = playerSource.getSource();
-            window.open(currentSource.src);
+            window.location.assign(currentSource.src);
         }
 
         function getActiveBitrate() {
@@ -335,7 +337,24 @@
             $(this).fadeIn(50);
         });
         $(document).ready(function () {
-            $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(1600);
+            $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
+        });
+        $(document).ready(function() {
+            const adSlots = {
+                inlinePreroll: {
+                    "slotType": "Inline preroll",
+                    "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
+                },
+                skippablePreroll: {
+                    "slotType": "skippable preroll",
+                    "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
+                }
+            };
+            for (let prop in adSlots) {
+                var str = "lalalala";
+                $("#adSlotSelector").append( "<option value='new'>" + adSlots[prop].slotType + "</option>" )
+    //adSlots[prop].slotType
+            }
         });
     </script>
 
@@ -345,51 +364,44 @@
         const partnerId = 0;
         const uiconfId = 0;
         const entryId = 0;
-        function embed(){
-        mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
-        mw.setConfig("debug", true);
-        mw.setConfig("debugTarget", "analyticsLog");
-        mw.setConfig("autoScrollDebugTarget", true);
-        kWidget.embed({
-            "targetId": "kPlayer_ifp",
-            "wid": "_1750922",
-            "uiconf_id": 38602131,
-            "flashvars": {
-                "streamerType": "auto",
-                "EmbedPlayer.WebKitPlaysInline": false,
-                "autoPlay": false,
-                "doubleClick.plugin": true,
-                "doubleClick.adTagUrl": "http://nzz.elasticbrains.de/advideo/adserver.adtech.de_redirect_broken.xml",
-                "doubleClick.leadWithFlash": true,
-                "doubleClick.debugMode": true,
-                "doubleClick.adsManagerLoadedTimeout": 20000,
-                "skipBtn":{
-                    "plugin": true,
-                    "label": "Skip Ad",
-                    "skipOffset": 5
+
+        function embed() {
+            mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
+            mw.setConfig("debug", true);
+            mw.setConfig("debugTarget", "analyticsLog");
+            mw.setConfig("autoScrollDebugTarget", true);
+            kWidget.embed({
+                "targetId": "kPlayer_ifp",
+                "wid": "_1750922",
+                "uiconf_id": 38602131,
+                "flashvars": {
+                    "streamerType": "auto",
+                    "EmbedPlayer.WebKitPlaysInline": false,
+                    "autoPlay": false,
+                    "doubleClick.plugin": true,
+                    "doubleClick.adTagUrl": null,
+                    "doubleClick.leadWithFlash": true,
+                    "doubleClick.debugMode": true,
+                    "doubleClick.adsManagerLoadedTimeout": 20000,
+                    "skipBtn": {
+                        "plugin": true,
+                        "label": "Skip Ad",
+                        "skipOffset": 5
+                    },
+                    "vast": {
+                        "prerollUrl": null,
+                        "plugin": false
+                    },
+                    "debugInfo.isVisible": false,
+                    "disableHLSOnJs": false
                 },
-                "vast": {
-                    "prerollUrl": null,
-                    "plugin": false
-                },
-                "debugInfo.isVisible": false,
-                "disableHLSOnJs": false
-            },
-            "cache_st": 1466954509,
-            "entry_id": "1_q21adrz7i"
-//            "readyCallback": function( data ){
-//                // data includes an array of sources that can easily be put into a video tag:
-//                for( var i=0; i < data.sources.length; i++ ){
-//                    $("#appendStats").append(
-//                        $('<source />').attr( data.sources[i] )
-//                    )
-//                }
-//            }
-        })}
-        $(function() {
+                "cache_st": 1466954509,
+                "entry_id": "1_q21adrz7"
+            })
+        }
+        $(function () {
             embed();
         });
-
     </script>
 </div>
 
@@ -397,8 +409,7 @@
     <div style="clear: both;"></div>
     <button type="button" style="border-width: 0; border-radius: 8px; margin-top: 2px; margin-bottom: 5px; float: right;"
             onclick=$("#analyticsLog").empty();>Clear log</button>
-    <button type="button" style="background-color: yellowgreen; margin-left: 465px; border-width: 0; border-radius: 8px; margin-top: 2px; margin-bottom: 5px;"
-            onclick=downloadJSON()>Download JSON</button>
+    <button type="button" class="btn" onclick=downloadJSON()>Download JSON</button>
 </div>
 <div style="clear: both;"></div>
 <div style="width: 100%; margin-bottom: 0; bottom: 0; border-top-width: 2px; border-top-color: greenyellow; border-top-style: solid; position: static; background-color: #333; height: 25px; text-align: center; padding-bottom: 7px;">
