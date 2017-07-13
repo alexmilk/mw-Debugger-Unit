@@ -11,7 +11,7 @@
 
 <body>
 
-<div id="errorBar">
+<div id="errorBar" style="padding-left: 10px">
     <p>An error has been logged on the player</p><button id="okError" style="float: left; margin-top: 10px; margin-left: 10px">OK</button>
 </div>
 <div class="navbar">
@@ -29,7 +29,7 @@
         <button class="dropbtn">Tools</button>
         <div class="dropdown-content">
             <a href="#">Get video aspect ratio</a>
-            <a href="#">Download active flavor</a>
+            <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
             <a href="#" id="testOnVast" onclick="goToVast()">Test ad on Vast inspector</a>
             <a href="#">Standalone Dash Shaka player</a>
             <a href="#">Standalone HLS.JS player</a>
@@ -48,7 +48,7 @@
     <!--<input type="text" placeholder="Search anything" style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; position: absolute;">-->
     <!--<input type="image" src="search-icon-white-hi.png" alt="Click to search" style="width: 20px; height: 20px;"/>-->
         <form id="searchField" onsubmit="return false;">
-            <input style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; margin-right: 5px" type="text" id="searchInput" placeholder="Search anything"/>
+            <input style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; margin-right: 5px" type="search" id="searchInput" placeholder="Search anything"/>
             <input type="image" src="search-icon-white-hi.png" style="width: 20px; height: 20px; position: absolute" onclick="searchSite();" alt="Click to search"/>
         </form>
     </div>
@@ -83,12 +83,12 @@
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
     <div id="mainControlDiv">
-        <button type="button" onclick="changeEmbed();" class="btn" style="float: left;">Change Embed code</button>
+        <button type="button" onclick="changeEmbed()" class="btn" style="float: left;">Change Embed code</button>
         <button type="button" class="btn" onclick=doPlay()>Force Play</button>
         <button type="button" class="btn" onclick=doStop()>Force Stop</button>
         <button type="button" id="getSource" class="btn">get Sources</button>
         <button type="button" id="getCaptions" class="btn">get Captions</button>
-        <button type="button" onclick="embed();" class="btn" style="float: left;">Reload player</button>
+        <button type="button" onclick="embed()" class="btn" style="float: left;">Reload player</button>
 
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
@@ -105,6 +105,14 @@
         <input style="width: 380px;" type="text" id="adTagId" /><span>
         <button type="button" style="background-color: yellowgreen; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
     </button></span>
+        <div id="customEmbedParams">
+            <form onsubmit="return false;">
+                <input style="width: 100px; margin-bottom: 10px" type="text" placeholder="Partner Id"/><br>
+                <input style="width: 100px; margin-bottom: 10px" type="text" placeholder="Player Id"/><br>
+                <input style="width: 100px; margin-bottom: 10px" type="text" placeholder="Entry Id"/>
+            </form>
+            <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
+        </div>
     </div><br>
     <!--JSON Config DIV-->
 <div style="width:1125px; height: 410px; margin: 0 auto;">
@@ -127,7 +135,7 @@
                 });
                 $("#entrydit").replaceWith(kdp.evaluate("<b>Entry id: </b>" + "<b>{mediaProxy.entry.id}\n</b>"));
                 $("#uiconf").replaceWith(kdp.evaluate("<b>Player id: </b>" + "<b>{configProxy.kw.uiConfId}\n</b>"));
-                $.loadedTime = window.performance.timing.domContentLoadedEventEnd-window.performance.timing.navigationStart;
+                $.loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
                 $("#loadTime").append("Page loaded in " + $.loadedTime + " milliseconds");
             });
 
@@ -149,12 +157,17 @@
             kdp.kBind('doPlay', function () {
                 $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
             });
-            kdp.kBind('mediaError', function (playerError) {
-                $("#errorBar").slideDown(1000);
-                $("#errorBar p").append(" - The error "+ playerError.message);
+            kdp.kBind('playerError', function (errorEvent) {
+                $("#errorBar").slideDown(300);
+                $("#errorBar p").append(" - The error " + errorEvent.message);
             });
-            $('#okError').click(function (){
-              $('#errorBar').slideUp(1000);
+            kdp.kBind('mediaErrorError', function (errorEvent) {
+                $("#errorBar").slideDown(300);
+                $("#errorBar p").append(" - The error " + errorEvent.message);
+            });
+            //OK button handler
+            $('#okError').click(function () {
+                $('#errorBar').slideUp(300);
             });
             kdp.kBind('bumperStarted', function () {
                 $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
@@ -169,7 +182,9 @@
             kWidget.addReadyCallback(function (playerId) {
                 var kdp = document.getElementById(playerId);
                 var input = document.getElementById("adInput").value;
-                kdp.sendNotification("changeMedia", {"entryId": input});
+                kdp.sendNotification("changeMedia", {
+                    "entryId": input
+                });
             })
         }
         $("#cleanMedia").click(function () {
@@ -178,6 +193,7 @@
                 kdp.sendNotification("cleanMedia");
             })
         })
+
         function setKS() {
             kWidget.addReadyCallback(function (playerId) {
                 var kdp = document.getElementById(playerId);
@@ -185,101 +201,150 @@
                 kdp.setKDPAttribute('servicesProxy.kalturaClient', 'ks', input);
             })
         }
+
         function doPlay() {
             kWidget.addReadyCallback(function (playerId) {
                 var kdp = document.getElementById(playerId);
                 kdp.sendNotification("doPlay");
             })
         }
+
         function doStop() {
             kWidget.addReadyCallback(function (playerId) {
                 var kdp = document.getElementById(playerId);
                 kdp.sendNotification("doStop");
             })
         }
+
         function callAd() {
             kWidget.addReadyCallback(function (playerId) {
-               $.kPlayer = document.kPlayer_ifp_ifp;
+                $.kPlayer = document.kPlayer_ifp_ifp;
                 window.open($.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
                 return false;
-            })}
-        $( document ).ready(function (){
-            var msg = $.ajax({type: "GET", url: "https://tinyurl.com/api-create.php?url=" + document.location.href, async: false}).responseText;
+            })
+        }
+
+        function changeEmbed() {
+            if ($('#customEmbedParams').css("display") == "none") {
+                $("#customEmbedParams").slideDown(500);
+            }
+            else {
+                $("#customEmbedParams").slideUp(500);
+            }
+        }
+        $(document).ready(function () {
+            var msg = $.ajax({
+                type: "GET",
+                url: "https://tinyurl.com/api-create.php?url=" + document.location.href,
+                async: false
+            }).responseText;
             $("#tinyUrl").append(msg);
             return false;
-            });
-
-            kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
-                kdp.kBind('playerReady', function () {
-                    $.kPlayer = document.kPlayer_ifp_ifp;
-                    $("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
-                    $(".mw-debug-info").append(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.debugInfo);
-                    return false;
-                })});
-        $( document ).ready(function() {
+        });
+        kWidget.addReadyCallback(function (playerId) {
+            var kdp = document.getElementById(playerId);
+            kdp.kBind('playerReady', function () {
+                $.kPlayer = document.kPlayer_ifp_ifp;
+                $("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
+                $(".mw-debug-info").append(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.debugInfo);
+                return false;
+            })
+        });
+        $(document).ready(function () {
             kWidget.addReadyCallback(function (playerId) {
                 $.kPlayer = document.kPlayer_ifp_ifp;
-                var input = $("#adTagId");
-                input.val( input.val() + $.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
+                const input = $("#adTagId");
+                input.val(input.val() + $.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
                 return false;
-            })});
+            })
+        });
         // Top menu buttons and logic
-        $("#removeThumb").click(function() {
-            var kPlayerContent = $("#kPlayer_ifp_ifp").contents()[0];
-            $(kPlayerContent).find("#kPlayer_ifp").css("visibility", "hidden");
+        $("#removeThumb").click(function () {
+            const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
+            const playerThumb = $(playerContent).find("#kPlayer_ifp");
+            if ($(playerThumb).css("visibility") == 'visible') {
+                document.getElementById('removeThumb').textContent = "Show thumbnail";
+                $(playerThumb).css("visibility", "hidden");
+            }
+            else {
+                $(playerThumb).css("visibility", "visible");
+                document.getElementById('removeThumb').textContent = "Hide thumbnail";
+            }
         });
-        $("#removePlay").click(function(){
-          var playButton = $("#kPlayer_ifp_ifp").contents()[0];
-          $(playButton).find(".largePlayBtn").css("visibility", "hidden");
+        $("#removePlay").click(function () {
+            const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
+            const playButton = $(playerContent).find(".largePlayBtn");
+            if ($(playButton).css("display") == 'block') {
+                document.getElementById('removePlay').textContent = "Show play button";
+                $(playButton).css("display", "none");
+            }
+            else {
+                $(playButton).css("display", "block");
+                document.getElementById('removePlay').textContent = "Hide play button";
+            }
         });
-        $("#hideControls").click(function() {
+        $("#hideControls").click(function () {
             const hideControls = $("#kPlayer_ifp_ifp").contents()[0];
             const controls = window.kPlayer_ifp_ifp.document.querySelector('.controlBarContainer');
-                if (controls.style.display == "none") {
-                    controls.style.display = "block";
-                    document.getElementById('hideControls').textContent = "Hide controls bar";
-                } else {
-                    controls.style.display = "none";
-                    document.getElementById('hideControls').textContent = "Show controls bar";
-                }
+            if (controls.style.display == "none") {
+                controls.style.display = "block";
+                document.getElementById('hideControls').textContent = "Hide controls bar";
+            }
+            else {
+                controls.style.display = "none";
+                document.getElementById('hideControls').textContent = "Show controls bar";
+            }
 
         });
+
         function goToVast() {
             window.open("https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=" + document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
-            }
-        function getActiveBitrate(){
+        }
+
+        function getActiveSource() {
+            const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
+            const currentSource = playerSource.getSource();
+            window.open(currentSource.src);
+        }
+
+        function getActiveBitrate() {
             let k = document.kPlayer_ifp_ifp;
             let k2 = k.document.getElementsByClassName('persistentNativePlayer nativeEmbedPlayerPid');
             let sumk = k2.pid_kPlayer_ifp.webkitVideoDecodedByteCount / 1000;
             alert(sumk);
         }
+
         function downloadJSON() {
             let jsonContent = document.getElementById('appendJSON');
             window.open('_blank').document.write(jsonContent.innerHTML);
         }
-        $("#getSource").click(function (){
+        $("#getSource").click(function () {
             var playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
             for (var i = 0; i < playerSources.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
-            }});
-        $("#getCaptions").click(function (){
+            }
+        });
+        $("#getCaptions").click(function () {
             var playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
             for (var i = 0; i < playerCaptions.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
             }
         });
-        $('button[type=button], input[type=submit]').hover(function() {
-            $( this ).fadeOut( 50 );
-            $( this ).fadeIn( 50 );
+        $('button[type=button], input[type=submit]').hover(function () {
+            $(this).fadeOut(50);
+            $(this).fadeIn(50);
         });
-        $( document ).ready( function(){
-          $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(1600);
+        $(document).ready(function () {
+            $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(1600);
         });
     </script>
 
     <!--Main embed script-->
     <script>
+        const emptyFlashvars = {};
+        const partnerId = 0;
+        const uiconfId = 0;
+        const entryId = 0;
         function embed(){
         mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
         mw.setConfig("debug", true);
@@ -311,7 +376,7 @@
                 "disableHLSOnJs": false
             },
             "cache_st": 1466954509,
-            "entry_id": "1_q21adrz7"
+            "entry_id": "1_q21adrz7i"
 //            "readyCallback": function( data ){
 //                // data includes an array of sources that can easily be put into a video tag:
 //                for( var i=0; i < data.sources.length; i++ ){
