@@ -4,7 +4,7 @@
 <head>
     <title>HLS.JS TEST - Disney</title>
     <!--Scripts sections-->
-    <script src="http://player.kaltura.com/resources/jquery/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="/mwEmbed/mwEmbedLoader.php/p/1750922/sp/175092200/embedIframeJs/uiconf_id/38602131/partner_id/1750922"></script>
     <link rel="stylesheet" href="mainStyles.css">
 </head>
@@ -61,7 +61,6 @@
         <p id="uiconf" class="propertiesText"></p><br>
         <p id="entrydit" class="propertiesText"></p><br>
         <p id="loadTime" class="propertiesText"></p>
-        <p id="tinyUrl" class="propertiesText">TinyURL: </p>
     </div>
 
 <div class="containerRight">
@@ -88,6 +87,7 @@
         <button type="button" class="btn" onclick=doStop()>Force Stop</button>
         <button type="button" id="getSource" class="btn">get Sources</button>
         <button type="button" id="getCaptions" class="btn">get Captions</button>
+        <button type="button" id="getTiny" class="btn" onclick="tiny()">get TinyUrl</button>
         <button type="button" onclick="embed()" class="btn" style="float: left;">Reload player</button>
 
 
@@ -108,11 +108,12 @@
         <select id="adSlotSelector" name="Select an ad tag" size="1">
         </select>
         <div id="customEmbedParams">
+            <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
                 <input id="partnerId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Player Id"/><br>
                 <input id="entryId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Entry Id"/>
-                <input id="submitEmbed" style="width: 100px; margin-bottom: 10px" type="submit"/>
+                <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
             </form>
             <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
         </div>
@@ -222,8 +223,8 @@
 
         function callAd() {
             kWidget.addReadyCallback(function (playerId) {
-                $.kPlayer = document.kPlayer_ifp_ifp;
-                window.open($.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
+                let adInput = $('#adTagId').val();
+                window.open(adInput);
                 return false;
             })
         }
@@ -236,15 +237,6 @@
                 $("#customEmbedParams").slideUp(500);
             }
         }
-        $(document).ready(function () {
-            var msg = $.ajax({
-                type: "GET",
-                url: "https://tinyurl.com/api-create.php?url=" + document.location.href,
-                async: false
-            }).responseText;
-            $("#tinyUrl").append(msg);
-            return false;
-        });
         kWidget.addReadyCallback(function (playerId) {
             var kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
@@ -254,14 +246,14 @@
                 return false;
             })
         });
-        $(document).ready(function () {
-            kWidget.addReadyCallback(function (playerId) {
-                $.kPlayer = document.kPlayer_ifp_ifp;
-                const input = $("#adTagId");
-                input.val(input.val() + $.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
-                return false;
-            })
-        });
+//        $(document).ready(function () {
+//            kWidget.addReadyCallback(function (playerId) {
+//                $.kPlayer = document.kPlayer_ifp_ifp;
+//                const input = $("#adTagId");
+//                input.val(input.val() + $.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
+//                return false;
+//            })
+//        });
         // Top menu buttons and logic
         $("#removeThumb").click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
@@ -358,34 +350,63 @@
     //adSlots[prop].slotType
             }
         });
+        let tiny = function(){
+            window.open("http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search'), '_blank');
+        }
     </script>
+
     <script>
-        //Empty embed object for custom embeds
-        $('#submitEmbed').click( function() {
-            var flashvars = $('#uivarsOverride').val();
+        function buildPath() {
+            let path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
+                '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
+            $.getScript(path, function (data, textStatus, jqxhr) {
+                if (jqxhr.status === 200) {
+                    reembedPlayer();
+                } else {
+                    alert("Script failed to load. Cannot render player :(");
+                }
+            });
+            setTimeout($("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2)), 6000);
+        }
+        function reembedPlayer() {
+            mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
+            mw.setConfig("debug", true);
+            mw.setConfig("debugTarget", "analyticsLog");
+            mw.setConfig("autoScrollDebugTarget", true);
+            mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
+            $('#appendJSON').empty();
+            let str = $('#uivarsOverride').val();
+            str = str.split("\n").join('');
+            let customFlashvars;
+            try{
+                if(str){
+                    customFlashvars = $.parseJSON(str);
+                }
+            } catch(error){
+                alert('Please validate the flashvars');
+                return;
+            }
             const newEmbed = {
                 "targetId": "kPlayer_ifp",
                 "wid": "_" + $('#partnerId').val(),
                 "uiconf_id": $('#uiconfId').val(),
-                "flashvars": {},
-                "cache_st": 1466954509,
+                "flashvars": customFlashvars,
+                "cache_st": Date.now(),
                 "entry_id": $('#entryId').val()
             };
             document.kPlayer_ifp_ifp.kWidget.embed(newEmbed);
-        })
+        }
+
     </script>
     <!--Main embed script-->
     <script>
-        const emptyFlashvars = {};
-        const partnerId = 0;
-        const uiconfId = 0;
-        const entryId = 0;
         const adInput = document.getElementById('adTagId');
         function embed(adInput) {
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
             mw.setConfig("debugTarget", "analyticsLog");
             mw.setConfig("autoScrollDebugTarget", true);
+            mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             kWidget.embed({
                 "targetId": "kPlayer_ifp",
                 "wid": "_1750922",
@@ -411,7 +432,7 @@
                     "debugInfo.isVisible": false,
                     "disableHLSOnJs": false
                 },
-                "cache_st": 1466954509,
+                "cache_st": Date.now(),
                 "entry_id": "1_q21adrz7"
             })
         }

@@ -52,10 +52,14 @@ body {
 }
 /* Links inside the navbar */
 #customEmbedParams {
-    height: 300px;
+    margin-top: 25px;
     text-align: left;
     /*padding: 10px;*/
     display: none;
+}
+#customEmbedParams p{
+    font-family: Arial;
+    font-size: small;
 }
 .navbar li {
     font-family: Arial;
