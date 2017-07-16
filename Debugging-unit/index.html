@@ -361,18 +361,17 @@
     </script>
     <script>
         //Empty embed object for custom embeds
-        var flashvars = $('#uivarsOverride').val();
-        const newEmbed = {
-            "targetId": "kPlayer_ifp",
-            "wid": "_" + $('#partnerId').val(),
-            "uiconf_id": $('#uiconfId').val(),
-            "flashvars": {flashvars},
-            "cache_st": 1466954509,
-            "entry_id": $('#entryId').val()
-        };
-
         $('#submitEmbed').click( function() {
-            playerFrame.kWidget.embed(newEmbed);
+            var flashvars = $('#uivarsOverride').val();
+            const newEmbed = {
+                "targetId": "kPlayer_ifp",
+                "wid": "_" + $('#partnerId').val(),
+                "uiconf_id": $('#uiconfId').val(),
+                "flashvars": {},
+                "cache_st": 1466954509,
+                "entry_id": $('#entryId').val()
+            };
+            document.kPlayer_ifp_ifp.kWidget.embed(newEmbed);
         })
     </script>
     <!--Main embed script-->
