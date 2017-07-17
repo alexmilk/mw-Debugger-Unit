@@ -93,16 +93,16 @@
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
-            <input style="width: 380px;" type="text" id="adInput" placeholder="Input entry id"/>
+            <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
             <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px" type="submit" onclick="setEntry();"/>
         </form>
         <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
         <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
-            <input style="width: 380px;" type="text" id="ksInput" placeholder="Input valid KS"/>
+            <input class="inputBox" style="width: 300px;" type="text" id="ksInput" placeholder="Input valid KS"/>
             <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5px" type="submit" onclick="setKS();"/>
         </form>
         <p style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</p>
-        <input style="width: 380px;" type="text" id="adTagId" /><span>
+        <input class="inputBox" style="width: 300px;" type="text" id="adTagId" /><span>
         <button type="button" style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
     </button></span>
         <select id="adSlotSelector" name="Select an ad tag" size="1">
@@ -110,9 +110,9 @@
         <div id="customEmbedParams">
             <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
-                <input id="partnerId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Partner Id"/><br>
-                <input id="uiconfId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Player Id"/><br>
-                <input id="entryId" style="width: 100px; margin-bottom: 10px" type="text" placeholder="Entry Id"/>
+                <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
+                <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
+                <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
             </form>
             <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
@@ -197,7 +197,7 @@
                 var kdp = document.getElementById(playerId);
                 kdp.sendNotification("cleanMedia");
             })
-        })
+        });
 
         function setKS() {
             kWidget.addReadyCallback(function (playerId) {
