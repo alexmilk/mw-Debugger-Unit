@@ -67,7 +67,7 @@
     <!--QRCode Generator - Google Charts-->
     <p><img src="" alt="Grab me" id="generateMe" /></p>
     <script type="text/javascript">
-        var ele = document.getElementById("generateMe");
+        let ele = document.getElementById("generateMe");
         ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
     </script>
     </div>
@@ -115,7 +115,7 @@
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
             </form>
-            <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
+            <textarea id="uiletsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashlets:"></textarea>
         </div>
     </div><br>
     <!--JSON Config DIV-->
@@ -131,7 +131,7 @@
         const playerFrame = document.kPlayer_ifp_ifp;
         //kBinds and other functions
         kWidget.addReadyCallback(function (playerId) {
-            var kdp = document.getElementById(playerId);
+            let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
                 $("#analyticsLog").append(kdp.evaluate("Player Version: " + "{playerVersion}<br>\n")).addClass("greenText");
                 $("#analyticsLog").append(kdp.evaluate("Entry Id: " + "{mediaProxy.entry.id}\n<br>")).addClass("greenText");
@@ -185,8 +185,8 @@
         //The mainBrain
         function setEntry() {
             kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
-                var input = document.getElementById("adInput").value;
+                let kdp = document.getElementById(playerId);
+                let input = document.getElementById("adInput").value;
                 kdp.sendNotification("changeMedia", {
                     "entryId": input
                 });
@@ -194,29 +194,29 @@
         }
         $("#cleanMedia").click(function () {
             kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
+                let kdp = document.getElementById(playerId);
                 kdp.sendNotification("cleanMedia");
             })
         });
 
         function setKS() {
             kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
-                var input = document.getElementById("ksInput").value;
+                let kdp = document.getElementById(playerId);
+                let input = document.getElementById("ksInput").value;
                 kdp.setKDPAttribute('servicesProxy.kalturaClient', 'ks', input);
             })
         }
 
         function doPlay() {
             kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
+                let kdp = document.getElementById(playerId);
                 kdp.sendNotification("doPlay");
             })
         }
 
         function doStop() {
             kWidget.addReadyCallback(function (playerId) {
-                var kdp = document.getElementById(playerId);
+                let kdp = document.getElementById(playerId);
                 kdp.sendNotification("doStop");
             })
         }
@@ -238,7 +238,7 @@
             }
         }
         kWidget.addReadyCallback(function (playerId) {
-            var kdp = document.getElementById(playerId);
+            let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
                 $.kPlayer = document.kPlayer_ifp_ifp;
                 $("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
@@ -315,14 +315,14 @@
             window.open('_blank').document.write(jsonContent.innerHTML);
         }
         $("#getSource").click(function () {
-            var playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
-            for (var i = 0; i < playerSources.length; i++) {
+            let playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
+            for (let i = 0; i < playerSources.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
             }
         });
         $("#getCaptions").click(function () {
-            var playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
-            for (var i = 0; i < playerCaptions.length; i++) {
+            let playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
+            for (let i = 0; i < playerCaptions.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
             }
         });
@@ -345,7 +345,7 @@
                 }
             };
             for (let prop in adSlots) {
-                var str = "lalalala";
+                let str = "lalalala";
                 $("#adSlotSelector").append( "<option value='new'>" + adSlots[prop].slotType + "</option>" )
     //adSlots[prop].slotType
             }
@@ -376,22 +376,22 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             $('#appendJSON').empty();
             $("#loadTime").empty();
-            let varsStr = $('#uivarsOverride').val();
-            varsStr = varsStr.split("\n").join('');
-            let customFlashvars;
+            let letsStr = $('#uiletsOverride').val();
+            letsStr = letsStr.split("\n").join('');
+            let customFlashlets;
             try{
-                if(varsStr){
-                    customFlashvars = $.parseJSON(varsStr);
+                if(letsStr){
+                    customFlashlets = $.parseJSON(letsStr);
                 }
             } catch(    error){
-                alert('Please validate the flashvars');
+                alert('Please validate the flashlets');
                 return;
             }
             const newEmbed = {
                 "targetId": "kPlayer_ifp",
                 "wid": "_" + $('#partnerId').val(),
                 "uiconf_id": $('#uiconfId').val(),
-                "flashvars": customFlashvars,
+                "flashlets": customFlashlets,
                 "cache_st": Date.now(),
                 "entry_id": $('#entryId').val()
             };
@@ -413,7 +413,7 @@
                 "targetId": "kPlayer_ifp",
                 "wid": "_1750922",
                 "uiconf_id": 38602131,
-                "flashvars": {
+                "flashlets": {
                     "streamerType": "auto",
                     "EmbedPlayer.WebKitPlaysInline": false,
                     "autoPlay": false,
