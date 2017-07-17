@@ -141,7 +141,7 @@
                 $("#entrydit").replaceWith(kdp.evaluate("<b>Entry id: </b>" + "<b>{mediaProxy.entry.id}\n</b>"));
                 $("#uiconf").replaceWith(kdp.evaluate("<b>Player id: </b>" + "<b>{configProxy.kw.uiConfId}\n</b>"));
                 $.loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-                $("#loadTime").append("Page loaded in " + $.loadedTime + " milliseconds");
+                $("#loadTime").prepend("Page loaded in " + $.loadedTime + " milliseconds");
             });
 
             kdp.kBind('mediaReady', function () {
@@ -375,14 +375,15 @@
             mw.setConfig("autoScrollDebugTarget", true);
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             $('#appendJSON').empty();
-            let str = $('#uivarsOverride').val();
-            str = str.split("\n").join('');
+            $("#loadTime").empty();
+            let varsStr = $('#uivarsOverride').val();
+            varsStr = varsStr.split("\n").join('');
             let customFlashvars;
             try{
-                if(str){
-                    customFlashvars = $.parseJSON(str);
+                if(varsStr){
+                    customFlashvars = $.parseJSON(varsStr);
                 }
-            } catch(error){
+            } catch(    error){
                 alert('Please validate the flashvars');
                 return;
             }
@@ -402,6 +403,7 @@
     <script>
         const adInput = document.getElementById('adTagId');
         function embed(adInput) {
+            $("#loadTime").empty();
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
             mw.setConfig("debugTarget", "analyticsLog");
