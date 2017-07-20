@@ -5,7 +5,7 @@
     <title>HLS.JS TEST - Disney</title>
     <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="/mwEmbed/mwEmbedLoader.php/p/1750922/sp/175092200/embedIframeJs/uiconf_id/38602131/partner_id/1750922"></script>
+    <script src="/mwEmbed/mwEmbedLoader.php/p/618292/sp/61829200/embedIframeJs/uiconf_id/31328401/partner_id/618292"></script>
     <link rel="stylesheet" href="mainStyles.css">
 </head>
 
@@ -22,6 +22,9 @@
         <div class="dropdown-content">
         <a onclick="embed(adInput)">Reload player</a>
         <a onclick="getActiveBitrate()">Get Current Bitrate</a>
+            <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
+            <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
+
 
         </div>
     </div>
@@ -124,9 +127,6 @@
     <pre id="appendJSON"></pre>
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
-
-    <br>
-
     <script>
         const playerFrame = document.kPlayer_ifp_ifp;
         //kBinds and other functions
@@ -246,14 +246,12 @@
                 return false;
             })
         });
-//        $(document).ready(function () {
-//            kWidget.addReadyCallback(function (playerId) {
-//                $.kPlayer = document.kPlayer_ifp_ifp;
-//                const input = $("#adTagId");
-//                input.val(input.val() + $.kPlayer.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
-//                return false;
-//            })
-//        });
+        // Youbora tracking analytics events:
+        window['trackYouboraAnalyticsEvent'] = function(eventId, data){
+            // append event data.
+            $('#appendStats').prepend( eventId + ": " +  data + "\n" );
+        };
+
         // Top menu buttons and logic
         $("#removeThumb").click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
@@ -411,8 +409,8 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             kWidget.embed({
                 "targetId": "kPlayer_ifp",
-                "wid": "_1750922",
-                "uiconf_id": 38602131,
+                "wid": "_618292",
+                "uiconf_id": 31328401,
                 "flashlets": {
                     "streamerType": "auto",
                     "EmbedPlayer.WebKitPlaysInline": false,
@@ -435,7 +433,7 @@
                     "disableHLSOnJs": false
                 },
                 "cache_st": Date.now(),
-                "entry_id": "1_q21adrz7"
+                "entry_id": "1_xktykxzs"
             })
         }
         $(function () {
