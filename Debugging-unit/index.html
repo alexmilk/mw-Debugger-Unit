@@ -246,12 +246,7 @@
                 return false;
             })
         });
-        // Youbora tracking analytics events:
-        window['trackYouboraAnalyticsEvent'] = function(eventId, data){
-            // append event data.
-            $('#appendStats').prepend( eventId + ": " +  data + "\n" );
-        };
-
+        
         // Top menu buttons and logic
         $("#removeThumb").click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
