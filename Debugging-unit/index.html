@@ -20,7 +20,7 @@
     <div class="dropdown">
     <button class="dropbtn">Functions</button>
         <div class="dropdown-content">
-        <a onclick="embed(adInput)">Reload player</a>
+        <a onclick="embed()">Reload player</a>
         <a onclick="getActiveBitrate()">Get Current Bitrate</a>
             <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
             <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
@@ -51,6 +51,7 @@
     <!--<input type="text" placeholder="Search anything" style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; position: absolute;">-->
     <!--<input type="image" src="search-icon-white-hi.png" alt="Click to search" style="width: 20px; height: 20px;"/>-->
         <form id="searchField" onsubmit="return false;">
+            <!--Search functionality still WIP-->
             <input style="height: 20px; border-radius: 15px; border-width: 0; background-color: #FFFFFF; text-align: center; margin-right: 5px" type="search" id="searchInput" placeholder="Search anything"/>
             <input type="image" src="search-icon-white-hi.png" style="width: 20px; height: 20px; position: absolute" onclick="searchSite();" alt="Click to search"/>
         </form>
@@ -61,8 +62,8 @@
 <div id="topHeaderDiv">
     <div class="containerLeft">
         <h2 class="texts">mwDebugger Unit v1.0</h2>
-        <p id="uiconf" class="propertiesText"></p><br>
-        <p id="entrydit" class="propertiesText"></p><br>
+        <p id="uiconfText" class="propertiesText"></p>
+        <p id="entryIdText" class="propertiesText"></p>
         <p id="loadTime" class="propertiesText"></p>
     </div>
 
@@ -128,22 +129,16 @@
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
     <script>
-        const playerFrame = document.kPlayer_ifp_ifp;
+        const playerFrame = document.kPlayer_ifp_ifp; //Keep player frame in var.
         //kBinds and other functions
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
-                $("#analyticsLog").append(kdp.evaluate("Player Version: " + "{playerVersion}<br>\n")).addClass("greenText");
-                $("#analyticsLog").append(kdp.evaluate("Entry Id: " + "{mediaProxy.entry.id}\n<br>")).addClass("greenText");
-                kdp.kBind('playerReady', function () {
-                    $("#analyticsLog").append("Ready to play.<br>").addClass("greenText")
-                });
-                $("#entrydit").replaceWith(kdp.evaluate("<b>Entry id: </b>" + "<b>{mediaProxy.entry.id}\n</b>"));
-                $("#uiconf").replaceWith(kdp.evaluate("<b>Player id: </b>" + "<b>{configProxy.kw.uiConfId}\n</b>"));
+                $("#entryIdText").append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
+                $("#uiconfText").append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
                 $.loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
                 $("#loadTime").prepend("Page loaded in " + $.loadedTime + " milliseconds");
             });
-
             kdp.kBind('mediaReady', function () {
                 $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
             });
@@ -370,6 +365,8 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             $('#appendJSON').empty();
             $("#loadTime").empty();
+            $("#entryIdText").empty();
+            $("#uiconfText").empty();
             let varsStr = $('#uivarsOverride').val();
             varsStr = varsStr.split("\n").join('');
             let customFlashvars;
@@ -395,8 +392,8 @@
     </script>
     <!--Main embed script-->
     <script>
-        const adInput = document.getElementById('adTagId');
-        function embed(adInput) {
+        function embed() {
+            const adInput = $('#adTagId').val();
             $("#loadTime").empty();
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
@@ -413,17 +410,13 @@
                     "autoPlay": false,
                     "doubleClick.plugin": true,
                     "doubleClick.adTagUrl": adInput,
-                    "doubleClick.leadWithFlash": true,
+                    "doubleClick.leadWithFlash": false,
                     "doubleClick.debugMode": true,
                     "doubleClick.adsManagerLoadedTimeout": 20000,
                     "skipBtn": {
                         "plugin": true,
                         "label": "Skip Ad",
                         "skipOffset": 5
-                    },
-                    "vast": {
-                        "prerollUrl": null,
-                        "plugin": false
                     },
                     "debugInfo.isVisible": false,
                     "disableHLSOnJs": false
