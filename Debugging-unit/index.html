@@ -118,7 +118,7 @@
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
             </form>
-            <textarea id="uiletsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashlets:"></textarea>
+            <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
         </div>
     </div><br>
     <!--JSON Config DIV-->
@@ -349,6 +349,7 @@
     </script>
 
     <script>
+        //Custom embed code loader script.
         function buildPath() {
             let path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
                 '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
@@ -369,22 +370,22 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             $('#appendJSON').empty();
             $("#loadTime").empty();
-            let letsStr = $('#uiletsOverride').val();
-            letsStr = letsStr.split("\n").join('');
-            let customFlashlets;
+            let varsStr = $('#uivarsOverride').val();
+            varsStr = varsStr.split("\n").join('');
+            let customFlashvars;
             try{
-                if(letsStr){
-                    customFlashlets = $.parseJSON(letsStr);
+                if(varsStr){
+                    customFlashvars = $.parseJSON(varsStr);
                 }
-            } catch(    error){
-                alert('Please validate the flashlets');
+            } catch(error){
+                alert('Please validate the flashvars');
                 return;
             }
             const newEmbed = {
                 "targetId": "kPlayer_ifp",
                 "wid": "_" + $('#partnerId').val(),
                 "uiconf_id": $('#uiconfId').val(),
-                "flashlets": customFlashlets,
+                "flashvars": customFlashvars,
                 "cache_st": Date.now(),
                 "entry_id": $('#entryId').val()
             };
@@ -406,7 +407,7 @@
                 "targetId": "kPlayer_ifp",
                 "wid": "_1666321",
                 "uiconf_id": 39652642,
-                "flashlets": {
+                "flashvars": {
                     "streamerType": "auto",
                     "EmbedPlayer.WebKitPlaysInline": false,
                     "autoPlay": false,
