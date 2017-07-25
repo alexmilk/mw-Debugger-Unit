@@ -5,7 +5,8 @@
     <title>mwDebugger Unit v1.0</title>
     <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/1666321/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
+    <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
+    <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
     <link rel="stylesheet" href="mainStyles.css">
 </head>
 
@@ -98,28 +99,31 @@
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
             <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
-            <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 10px" type="submit" onclick="setEntry();"/>
+            <input class="inputBtn" onclick="setEntry();" type="submit"/>
         </form>
         <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
         <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
             <input class="inputBox" style="width: 300px;" type="text" id="ksInput" placeholder="Input valid KS"/>
-            <input style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-right: 10px; margin-bottom: 5px" type="submit" onclick="setKS();"/>
+            <input class="inputBtn" type="submit" onclick="setKS();"/>
         </form>
         <p style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</p>
         <input class="inputBox" style="width: 300px;" type="text" id="adTagId" /><span>
-        <button type="button" style="background-color: #b5b5b5; border-width: 0; border-radius: 8px; clear: none; margin-left: 5px; margin-bottom: 10px;" onclick=callAd()>Call ad response
+        <button type="button" class="inputBtn" onclick=callAd()>Call ad response
     </button></span>
-        <select id="adSlotSelector" name="Select an ad tag" size="1">
+        <select id="adSlotSelector" name="adPresetSelector" size="1" onchange="appendSlot(event)">
+            <option selected disabled>Choose here</option>
         </select>
+        <p id="updateNotification" style="font-family: Arial; font-size: small; color: red; display: none"><img src="images/caution_sign.gif"/> Please reload the player.</p>
         <div id="customEmbedParams">
             <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
+                <input id="embedPathSelector" type="checkbox" checked="true" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library.</samp><br>
                 <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
             </form>
-            <textarea id="uivarsOverride" style="width: 250px; height: 200px; max-width: 290px; max-height: 205px; color: black;" placeholder="Add valid flashvars:"></textarea>
+            <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
         </div>
     </div><br>
     <!--JSON Config DIV-->
@@ -129,15 +133,14 @@
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
     <script>
-        const playerFrame = document.kPlayer_ifp_ifp; //Keep player frame in var.
         //kBinds and other functions
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
                 $("#entryIdText").append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
                 $("#uiconfText").append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
-                $.loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-                $("#loadTime").prepend("Page loaded in " + $.loadedTime + " milliseconds");
+                let loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
+                $("#loadTime").prepend("Page loaded in " + loadedTime + " milliseconds");
             });
             kdp.kBind('mediaReady', function () {
                 $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
@@ -235,9 +238,9 @@
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
-                $.kPlayer = document.kPlayer_ifp_ifp;
-                $("#appendJSON").append(JSON.stringify(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins, null, 2));
-                $(".mw-debug-info").append(document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.debugInfo);
+                let playerFrame = document.kPlayer_ifp_ifp;
+                $("#appendJSON").append(JSON.stringify(playerFrame.kalturaIframePackageData.playerConfig.plugins, null, 2));
+                $(".mw-debug-info").append(playerFrame.kalturaIframePackageData.playerConfig.plugins.debugInfo);
                 return false;
             })
         });
@@ -282,7 +285,9 @@
         });
 
         function goToVast() {
-            window.open("https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=" + document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl);
+            let vastInspectUrl = 'https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=';
+            let playerAdTag = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl;
+            window.open(vastInspectUrl + playerAdTag);
         }
 
         function getActiveSource() {
@@ -292,10 +297,10 @@
         }
 
         function getActiveBitrate() {
-            let k = document.kPlayer_ifp_ifp;
-            let k2 = k.document.getElementsByClassName('persistentNativePlayer nativeEmbedPlayerPid');
-            let sumk = k2.pid_kPlayer_ifp.webkitVideoDecodedByteCount / 1000;
-            alert(sumk);
+            let playerIframePackage = document.kPlayer_ifp_ifp;
+            let playerActiveClass = playerIframePackage.document.getElementsByClassName('persistentNativePlayer nativeEmbedPlayerPid');
+            let activeBitrate = playerActiveClass.pid_kPlayer_ifp.webkitVideoDecodedByteCount / 1000;
+            alert(activeBitrate);
         }
 
         function downloadJSON() {
@@ -321,33 +326,70 @@
         $(document).ready(function () {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
         });
+        //Preset ad selector for testing
+        const adSlots = {
+            inlinePreroll: {
+                "slotType": "Inline preroll",
+                "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
+            },
+            skippablePreroll: {
+                "slotType": "skippable preroll",
+                "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=",
+            },
+            SingleRedirectError: {
+                "slotType": "Single redirect error",
+                "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dredirecterror&nofb=1&correlator=",
+            }
+        };
         $(document).ready(function() {
-            const adSlots = {
-                inlinePreroll: {
-                    "slotType": "Inline preroll",
-                    "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
-                },
-                skippablePreroll: {
-                    "slotType": "skippable preroll",
-                    "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
-                }
-            };
             for (let prop in adSlots) {
-                let str = "lalalala";
-                $("#adSlotSelector").append( "<option value='new'>" + adSlots[prop].slotType + "</option>" )
-    //adSlots[prop].slotType
+                $("#adSlotSelector").append( "<option value= " + prop + ">" + adSlots[prop].slotType + "</option>" )
             }
         });
+        function appendSlot(event){
+            var prop = $(event.target).val();
+            var $adTag = $("#adTagId");
+            $("#adTagId").val(adSlots[prop].adTagUrl);
+            $adTag.focus();
+            $("#updateNotification").fadeIn(500);
+        }
+        //Open tinyUrl button
         let tiny = function(){
             window.open("http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search'), '_blank');
-        }
+        };
+//          Future sign up module mock-up.
+//            $(document).ready(function() {
+//                $('form').submit(function(evt){
+//                    evt.preventDefault();
+//                    var url = $(this).attr("action");
+//                    var formData = $(this).serialize();
+//                    $.post(url, formData, function(response) {
+//                        $('#signup').html("<p>Thanks for signing up!</p>");
+//                    }); //end post
+//                }); //end submit
+//            }); //end ready
+
     </script>
 
     <script>
+//        var onUseUiconfCheck = function (){
+//            if($('#useUiconfVersion').prop('checked') == true){
+//                $('#specificVersions').hide();
+//            } else {
+//                $('#specificVersions').show();
+//            }
+//
+//        };
         //Custom embed code loader script.
         function buildPath() {
-            let path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
-                '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
+            var path;
+            if($('#embedPathSelector').prop('checked')){
+                path = '/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
+                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
+            } else {
+                path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
+                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
+            }
             $.getScript(path, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                     reembedPlayer();
@@ -363,26 +405,23 @@
             mw.setConfig("debugTarget", "analyticsLog");
             mw.setConfig("autoScrollDebugTarget", true);
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
-            $('#appendJSON').empty();
-            $("#loadTime").empty();
-            $("#entryIdText").empty();
-            $("#uiconfText").empty();
-            let varsStr = $('#uivarsOverride').val();
-            varsStr = varsStr.split("\n").join('');
-            let customFlashvars;
+            $("#appendJSON,#loadTime,#entryIdText,#uiconfText").empty();
+            var str = $('.uivarsOverride').val();
+            str = str.split("\n").join('');
+            var myJson;
             try{
-                if(varsStr){
-                    customFlashvars = $.parseJSON(varsStr);
+                if(str){
+                    myJson = $.parseJSON(str);
                 }
             } catch(error){
-                alert('Please validate the flashvars');
+                alert('Please validate your JSON');
                 return;
             }
             const newEmbed = {
                 "targetId": "kPlayer_ifp",
                 "wid": "_" + $('#partnerId').val(),
                 "uiconf_id": $('#uiconfId').val(),
-                "flashvars": customFlashvars,
+                "flashvars": myJson,
                 "cache_st": Date.now(),
                 "entry_id": $('#entryId').val()
             };
@@ -393,8 +432,13 @@
     <!--Main embed script-->
     <script>
         function embed() {
-            const adInput = $('#adTagId').val();
-            $("#loadTime").empty();
+            $("#updateNotification").fadeOut(500);
+            var adInput = $('#adTagId').val();
+            if ($('#adTagId').val().length <= 0) {
+                var adInput = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator="
+            }
+            $("#appendJSON,#loadTime,#entryIdText,#uiconfText").empty();
+            var reportBitratePath = "https://preprod.motortrendondemand.com/wp-content/themes/ten/library/kaltura/plugins/mw.ReportBitrate.js";
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
             mw.setConfig("debugTarget", "analyticsLog");
@@ -405,21 +449,18 @@
                 "wid": "_1666321",
                 "uiconf_id": 39652642,
                 "flashvars": {
-                    "streamerType": "auto",
-                    "EmbedPlayer.WebKitPlaysInline": false,
-                    "autoPlay": false,
-                    "doubleClick.plugin": true,
-                    "doubleClick.adTagUrl": adInput,
-                    "doubleClick.leadWithFlash": false,
-                    "doubleClick.debugMode": true,
-                    "doubleClick.adsManagerLoadedTimeout": 20000,
-                    "skipBtn": {
-                        "plugin": true,
-                        "label": "Skip Ad",
-                        "skipOffset": 5
-                    },
+                    "autoPlay": true,
                     "debugInfo.isVisible": false,
-                    "disableHLSOnJs": false
+                    "DoubleClick": {
+                        "plugin": true,
+                        "adTagUrl": adInput,
+                        "prerollUrlJs": "",
+                        "leadWithFlash": true,
+                        "trackCuePoints": false,
+                        "debugMode": true, //Should enable debugMode for DoubleClick systems.
+                        "adsManagerLoadedTimeout": 15000
+                    },
+
                 },
                 "cache_st": Date.now(),
                 "entry_id": "1_18ek3et6"
@@ -438,8 +479,8 @@
     <button type="button" class="btn" onclick=downloadJSON()>Download JSON</button>
 </div>
 <div style="clear: both;"></div>
-<div style="width: 100%; margin-bottom: 0; bottom: 0; border-top-width: 2px; border-top-color: greenyellow; border-top-style: solid; position: static; background-color: #333; height: 25px; text-align: center; padding-bottom: 7px;">
-    <p style="font-size: 10px; font-family: Arial; color: white;">Designed by Alex Milkis. &copy;</p></div>
+<div id="footer">
+    <p id="footer p">Designed by Alex Milkis. &copy;</p></div>
 
 </body>
 

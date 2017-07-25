@@ -10,6 +10,7 @@ body {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     margin: auto;
+    margin-top: 5px;
     padding: 3px 20px 3px 5px;
     border: 1px solid #b7b7b7;
     -webkit-border-radius: 20px;
@@ -79,6 +80,39 @@ body {
     text-align: left;
     /*padding: 10px;*/
     display: none;
+}
+.uivarsOverride {
+    width: 350px;
+    height: 270px;
+    max-width: 450px;
+    max-height: 400px;
+    color: black;
+}
+#footer {
+    width: 100%;
+    margin-bottom: 0;
+    bottom: 0;
+    border-top-width: 2px;
+    border-top-color: greenyellow;
+    border-top-style: solid;
+    position: static;
+    background-color: #333;
+    height: 25px;
+    text-align: center;
+    padding-bottom: 7px
+}
+#footer p {
+    font-size: 10px;
+    font-family: Arial;
+    color: white;
+}
+.inputBtn {
+    background-color: #b5b5b5;
+    border-width: 0;
+    border-radius: 8px;
+    clear: none;
+    margin-left: 5px;
+    margin-bottom: 10px;
 }
 #customEmbedParams p{
     font-family: Arial;
