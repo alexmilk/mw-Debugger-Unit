@@ -7,7 +7,7 @@
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
     <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
-    <link rel="stylesheet" href="mainStyles.css">
+    <link rel="stylesheet" href="css/mainStyles.css">
 </head>
 
 <body>
@@ -438,7 +438,6 @@
                 var adInput = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator="
             }
             $("#appendJSON,#loadTime,#entryIdText,#uiconfText").empty();
-            var reportBitratePath = "https://preprod.motortrendondemand.com/wp-content/themes/ten/library/kaltura/plugins/mw.ReportBitrate.js";
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
             mw.setConfig("debugTarget", "analyticsLog");
@@ -460,7 +459,6 @@
                         "debugMode": true, //Should enable debugMode for DoubleClick systems.
                         "adsManagerLoadedTimeout": 15000
                     },
-
                 },
                 "cache_st": Date.now(),
                 "entry_id": "1_18ek3et6"
