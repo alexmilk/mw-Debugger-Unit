@@ -40,10 +40,8 @@ body {
     overflow: hidden;
     padding-bottom: 5px;
     background-color: #333;
-    border-bottom: solid;
-    border-bottom-width: 2px;
-    box-shadow: 0px 3px 15px #888888;
-    border-bottom-color: #5CCEEE;
+    border-bottom: 2px solid #5CCEEE;
+    box-shadow: 0 3px 15px #888888;
     position: fixed;
     top: 0;
     width: 100%;
@@ -54,10 +52,8 @@ body {
 #errorBar {
     overflow: hidden;
     background-color: #a20007;
-    border-bottom: solid;
-    border-bottom-width: 2px;
-    box-shadow: 0px 3px 15px #888888;
-    border-bottom-color: black;
+    border-bottom: 2px solid black;
+    box-shadow: 0 3px 15px #888888;
     position: fixed;
     top: 0;
     display: none;
@@ -92,9 +88,7 @@ body {
     width: 100%;
     margin-bottom: 0;
     bottom: 0;
-    border-top-width: 2px;
-    border-top-color: greenyellow;
-    border-top-style: solid;
+    border-top: 2px greenyellow solid;
     position: static;
     background-color: #333;
     height: 25px;
@@ -156,7 +150,7 @@ body {
     background-color: #333;
     cursor: hand;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     z-index: 4;
     margin-top: -5px;
 }
@@ -203,10 +197,8 @@ body {
     margin: auto;
     display: none;
     text-align: left;
-    border-width: 1px;
+    border: 1px dashed black;
     border-radius: 15px;
-    border-style: dashed;
-    border-color: black;
     padding: 5px;
     box-sizing: border-box;
 }
@@ -214,24 +206,19 @@ body {
     width: 1125px;
     height: 180px;
     margin: auto;
-    border-width: 1px;
+    border: 1px dashed black;
     border-radius: 15px;
-    border-style: dashed;
-    border-color: black;
     box-sizing: border-box;
     position: relative;
     display: none;
     z-index: 1;
     padding: 0;
-    padding-left: 0
 }
 #kPlayer_ifp {
     width: 560px;
     height: 320px;
     float: left;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
+    border: 1px solid black;
     box-sizing: border-box;
 }
 .propertiesText {
@@ -242,9 +229,7 @@ body {
     width: 558px;
     height: 120px;
     float: left;
-    border-width: 0px;
-    border-color: #0a0a0a;
-    border-style: solid;
+    border: 0 #0a0a0a solid;
     box-sizing: border-box;
     padding-left: 15px;
 }
@@ -252,9 +237,7 @@ body {
     width: 555px;
     height: 120px;
     float: right;
-    border-width: 0px;
-    border-color: #0a0a0a;
-    border-style: solid;
+    border: 0 #0a0a0a solid;
     box-sizing: border-box;
     padding-left: 5px;
     text-align: right;
@@ -265,19 +248,15 @@ body {
     height: 320px;
     font-family: Arial;
     color: white;
-    font-size: smaller;
-    height: 320px;
+    font-size: x-small;
     overflow-x: hidden !important;
-    font-size: smaller;
     float: right;
     word-wrap: break-word;
     counter-reset: line;
     text-align: left;
     margin-top: 0;
-    border-width: 1px;
+    border: 1px dotted black;
     display: none;
-    border-style: dotted;
-    border-color: black;
     padding-top: 5px;
     padding-left: 5px;
     padding-bottom: 5px;
@@ -293,10 +272,8 @@ body {
     float: left;
     counter-reset: line;
     text-align: left;
-    border-width: 1px;
-    border-style: dotted;
+    border: 1px dotted black;
     overflow-x:scroll;
-    border-color: black;
     padding-top: 5px;
     padding-left: 5px;
     padding-bottom: 5px;

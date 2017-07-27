@@ -6,7 +6,7 @@
     <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
-    <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
+    <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39120681/partner_id/1666321"></script>
     <link rel="stylesheet" href="css/mainStyles.css">
 </head>
 
@@ -17,12 +17,12 @@
 </div>
 <div class="navbar">
     <div style="float: left">
-    <li>Home</li>
+    <button class="dropbtn">Home</button>
     <div class="dropdown">
     <button class="dropbtn">Functions</button>
         <div class="dropdown-content">
         <a onclick="embed()">Reload player</a>
-        <a onclick="getActiveBitrate()">Get Current Bitrate</a>
+        <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
             <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
             <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
 
@@ -297,10 +297,8 @@
         }
 
         function getActiveBitrate() {
-            let playerIframePackage = document.kPlayer_ifp_ifp;
-            let playerActiveClass = playerIframePackage.document.getElementsByClassName('persistentNativePlayer nativeEmbedPlayerPid');
-            let activeBitrate = playerActiveClass.pid_kPlayer_ifp.webkitVideoDecodedByteCount / 1000;
-            alert(activeBitrate);
+            let playerFrame = document.kPlayer_ifp_ifp.kPlayer_ifp;
+            alert(playerFrame.plugins.morePlugins.embedPlayer.currentBitrate);
         }
 
         function downloadJSON() {
@@ -446,10 +444,10 @@
             kWidget.embed({
                 "targetId": "kPlayer_ifp",
                 "wid": "_1666321",
-                "uiconf_id": 39652642,
+                "uiconf_id": 39120681,
                 "flashvars": {
                     "autoPlay": true,
-                    "debugInfo.isVisible": false,
+                    "debugInfo.isVisible": true,
                     "DoubleClick": {
                         "plugin": true,
                         "adTagUrl": adInput,
