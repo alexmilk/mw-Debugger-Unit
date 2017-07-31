@@ -37,9 +37,11 @@ body {
 }
 .navbarTop {
     overflow: hidden;
-    padding-bottom: 5px;
-    background-color: #333;
-    border-bottom: 2px solid #5CCEEE;
+    background: darkgrey; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#6a6a6a, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#6a6a6a, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#6a6a6a, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#6a6a6a, black); /* Standard syntax (must be last) */
     box-shadow: 0 3px 15px #888888;
     position: fixed;
     top: 0;
@@ -78,10 +80,10 @@ body {
     display: none;
 }
 .uivarsOverride {
-    width: 350px;
+    width: 750px !important;
     height: 270px;
     margin-top: 10px;
-    max-width: 450px;
+    max-width: 550px;
     max-height: 400px;
     color: black;
 }
@@ -90,7 +92,6 @@ body {
     margin-bottom: 0;
     margin-top: 10px;
     bottom: 0;
-    border-top: 2px greenyellow solid;
     position: static;
     background-color: #333;
     height: 25px;
@@ -101,6 +102,7 @@ body {
     font-size: 10px;
     font-family: Arial;
     color: white;
+    padding-top: 5px;
 }
 .inputBtn {
     background-color: #b5b5b5;
@@ -114,25 +116,26 @@ body {
     font-family: Arial;
     font-size: small;
 }
-.navbar li {
+.navbarTop li {
     font-family: Arial;
     font-size: smaller;
     float: left;
     display: block;
-    height: 30px;
+    height: 25px;
     color: #f2f2f2;
     padding: 10px 16px;
     text-decoration: none;
     cursor: pointer;
 }
-.navbar li:hover {
+.navbarTop li:hover {
     background-color: #00cbff;
     color: #f2f2f2;
 }
 .dropbtn {
-    background-color: #333;
+    background-color: rgba(169, 169, 169, 0);
+    height: 30px;
     color: white;
-    padding: 10px 16px;
+    padding: 7px 16px;
     font-size: smaller;
     border: none;
     cursor: pointer;
@@ -140,7 +143,7 @@ body {
 .dropdown {
     position: relative;
     display: inline-block;
-    height: 30px;
+    height: 30;
     cursor: pointer;
 }
 .dropdown-content {
@@ -154,7 +157,7 @@ body {
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     z-index: 4;
-    margin-top: -5px;
+    margin-top: -2px;
 }
 .dropdown-content a {
     color: #f2f2f2;
@@ -174,10 +177,10 @@ body {
     background-color: #00cbff;
 }
 .greenText {
-    color: lawngreen;
+    color: #ffffff;
 }
 .texts {
-    font-family: Verdana;
+    font-family: Arial;
 }
 #analyticsLog {
     float: right;
@@ -186,7 +189,8 @@ body {
     background-color: black;
     overflow-y: scroll;
     overflow-x: hidden;
-    border: 1px solid black;
+    border: 1px solid darkgrey;
+    border-radius: 3px;
     font-family: Arial;
     padding: 5px;
     font-size: 11px;
@@ -198,8 +202,8 @@ body {
     margin: auto;
     display: none;
     text-align: left;
-    border: 1px dashed black;
-    border-radius: 15px;
+    border: 1px solid darkgrey;
+    border-radius: 3px;
     padding: 5px;
     box-sizing: border-box;
 }
@@ -207,8 +211,8 @@ body {
     width: 1125px;
     height: 180px;
     margin: auto;
-    border: 1px dashed black;
-    border-radius: 15px;
+    border: 1px solid darkgrey;
+    border-radius: 3px;
     box-sizing: border-box;
     position: relative;
     display: none;
@@ -230,7 +234,7 @@ body {
     width: 558px;
     height: 120px;
     float: left;
-    border: 0 #0a0a0a solid;
+    border: 0 darkgrey solid;
     box-sizing: border-box;
     padding-left: 15px;
 }
@@ -238,9 +242,11 @@ body {
     width: 555px;
     height: 120px;
     float: right;
-    border: 0 #0a0a0a solid;
+    border: 0 darkgrey solid;
     box-sizing: border-box;
     padding-left: 5px;
+    padding-top: 20px;
+    padding-right: 15px;
     text-align: right;
 }
 #appendStats {
