@@ -8,6 +8,10 @@
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
     <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
     <link rel="stylesheet" href="css/mainStyles.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -15,9 +19,9 @@
 <div id="errorBar" style="padding-left: 10px">
     <p>An error has been logged on the player</p><button id="okError" style="float: left; margin-top: 10px; margin-left: 10px">OK</button>
 </div>
-<div class="navbar">
+<div class="navbarTop" style="">
     <div style="float: left">
-    <button class="dropbtn">Home</button>
+    <a class="dropbtn">Home</a>
     <div class="dropdown">
     <button class="dropbtn">Functions</button>
         <div class="dropdown-content">
@@ -85,28 +89,28 @@
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
     <div id="mainControlDiv">
-        <button type="button" onclick="changeEmbed()" class="btn" style="float: left;">Change Embed code</button>
-        <button type="button" class="btn" onclick=doPlay()>Force Play</button>
-        <button type="button" class="btn" onclick=doStop()>Force Stop</button>
-        <button type="button" id="getSource" class="btn">get Sources</button>
-        <button type="button" id="getCaptions" class="btn">get Captions</button>
-        <button type="button" id="getTiny" class="btn" onclick="tiny()">get TinyUrl</button>
-        <button type="button" onclick="embed()" class="btn" style="float: left;">Reload player</button>
+        <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
+        <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
+        <button type="button" class="btn btn-primary btn-xs" onclick=doStop()>Force Stop</button>
+        <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
+        <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
+        <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
+        <button type="button" onclick="embed()" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
 
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
             <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
-            <input class="inputBtn" onclick="setEntry();" type="submit"/>
+            <input class="btn btn-primary btn-xs" onclick="setEntry();" type="submit"/>
         </form>
         <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
         <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
             <input class="inputBox" style="width: 300px;" type="text" id="ksInput" placeholder="Input valid KS"/>
-            <input class="inputBtn" type="submit" onclick="setKS();"/>
+            <input class="btn btn-primary btn-xs" type="submit" onclick="setKS();"/>
         </form>
         <p style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</p>
         <input class="inputBox" style="width: 300px;" type="text" id="adTagId" /><span>
-        <button type="button" class="inputBtn" onclick=callAd()>Call ad response
+        <button type="button" class="btn btn-primary btn-xs" onclick=callAd()>Call ad response
     </button></span>
         <select id="adSlotSelector" name="adPresetSelector" size="1" onchange="appendSlot(event)">
             <option selected disabled>Choose here</option>
@@ -119,14 +123,14 @@
                 <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
-                <input onclick="buildPath()" style="width: 100px; margin-bottom: 10px" type="submit"/>
+                <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
             </form>
             <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
         </div>
     </div><br>
     <!--JSON Config DIV-->
 <div style="width:1125px; height: 410px; margin: 0 auto;">
-    <p style="font-size: small; font-family: Arial; margin: 0;">Player's JSON config:</p>
+    <p style="font-size: small; font-family: Arial;">Player's JSON config:</p>
     <pre id="appendJSON"></pre>
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
@@ -315,10 +319,6 @@
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
             }
         });
-        $('button[type=button], input[type=submit]').hover(function () {
-            $(this).fadeOut(50);
-            $(this).fadeIn(50);
-        });
         $(document).ready(function () {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
         });
@@ -444,6 +444,7 @@
                         "debugMode": true, //Should enable debugMode for DoubleClick systems.
                         "adsManagerLoadedTimeout": 15000
                     },
+                    "playlistAPI.plugin": false
                 },
                 "cache_st": Date.now(),
                 "entry_id": "0_kjb4gz27"
@@ -455,11 +456,10 @@
     </script>
 </div>
 
-<div style="width:1125px; height: 20px; margin: 0 auto;">
+<div style="width:1125px; height: auto; margin: 0 auto;">
     <div style="clear: both;"></div>
-    <button type="button" style="border-width: 0; border-radius: 8px; margin-top: 2px; margin-bottom: 5px; float: right;"
-            onclick=$("#analyticsLog").empty();>Clear log</button>
-    <button type="button" class="btn" onclick=downloadJSON()>Download JSON</button>
+    <button type="button" class="btn btn-primary btn-xs" style="float: right;" onclick=$("#analyticsLog").empty();>Clear log</button>
+    <button type="button" class="btn btn-primary btn-xs" onclick=downloadJSON()>Download JSON</button>
 </div>
 <div style="clear: both;"></div>
 <div id="footer">
