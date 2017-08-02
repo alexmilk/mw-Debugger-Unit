@@ -53,24 +53,28 @@ body {
 
 #errorBar {
     overflow: hidden;
-    background-color: #a20007;
-    border-bottom: 2px solid black;
+    background: #cb0106; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#cb0106, #4e0007); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#cb0106, #4e0007); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#cb0106, #4e0007); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#cb0106, #4e0007); /* Standard syntax (must be last) */
+    box-shadow: 0 3px 15px #888888;
     box-shadow: 0 3px 15px #888888;
     position: fixed;
     top: 0;
     display: none;
     width: 100%;
     /* Full width */
-    height: 35px;
+    height: 30px;
     z-index: 3;
 }
-#errorBar p{
+#errorBar h4{
     color: white;
     font-weight: bold;
     font-family: Arial;
     float: left;
     display: inline-block;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 /* Links inside the navbar */
 #customEmbedParams {

@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 
-<!--/*!-->
-<!--* mwDebuggerUnit-->
-<!--* 1.0-->
-<!--*-->
-<!--* Copyright(c) 2017 Alex Milkis <alex.milkis@kaltura.com>-->
-<!--* MIT Licensed. http://www.opensource.org/licenses/mit-license.php-->
-<!--*-->
-<!--* http://corp.kaltura.com-->
-<!--*/-->
+<!-- mwDebuggerUnit -->
+<!-- 1.0 -->
+<!-- Copyright(c) 2017 Alex Milkis <alex.milkis@kaltura.com> -->
+<!-- MIT Licensed. http://www.opensource.org/licenses/mit-license.php -->
+<!-- http://corp.kaltura.com -->
+
 
 <head>
     <title>mwDebugger Unit v1.0</title>
     <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
-    <script src="/mwEmbed/mwEmbedLoader.php/p/1666321/sp/166632100/embedIframeJs/uiconf_id/39652642/partner_id/1666321"></script>
+    <script src="/mwEmbed/mwEmbedLoader.php/p/1955031/sp/195503100/embedIframeJs/uiconf_id/37558971/partner_id/1955031"></script>
     <link rel="stylesheet" href="css/mainStyles.css">
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -27,9 +24,9 @@
 <body>
 
 <div id="errorBar" style="padding-left: 10px">
-    <p>An error has been logged on the player</p><button id="okError" style="float: left; margin-top: 10px; margin-left: 10px">OK</button>
+    <h4>An error has been logged on the player</h4><button class="btn btn-default btn-xs" id="okError" style="float: left; margin-top: 3px; margin-left: 10px;">OK</button>
 </div>
-<div class="navbarTop" style="">
+<div class="navbarTop">
     <div style="float: left">
     <a class="dropbtn">Home</a>
     <div class="dropdown">
@@ -144,7 +141,7 @@
         <div id="customEmbedParams">
             <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
-                <input id="embedPathSelector" type="checkbox" checked="true" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library.</samp><br>
+                <input id="embedPathSelector" type="checkbox" checked="true" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library. (For localhost environment only)</samp><br>
                 <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
@@ -194,11 +191,11 @@
             });
             kdp.kBind('playerError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar p").append(" - " + errorEvent.message);
+                $("#errorBar h4").append(" - " + errorEvent.message);
             });
             kdp.kBind('mediaErrorError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar p").append(" - " + errorEvent.message);
+                $("#errorBar h4").append(" - " + errorEvent.message);
             });
             //OK button handler
             $('#okError').click(function () {
@@ -326,7 +323,7 @@
         function getActiveSource() {
             const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
             const currentSource = playerSource.getSource();
-            window.location.assign(currentSource.src);
+            window.open(currentSource.src, '_blank');
         }
 
         function getActiveBitrate() {
@@ -480,8 +477,8 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             kWidget.embed({
                 "targetId": "kPlayer_ifp",
-                "wid": "_1666321",
-                "uiconf_id": 39652642,
+                "wid": "_1955031",
+                "uiconf_id": 37558971,
                 "flashvars": {
                     "autoPlay": true,
                     "debugInfo.isVisible": false,
@@ -497,7 +494,7 @@
                     "playlistAPI.plugin": false
                 },
                 "cache_st": Date.now(),
-                "entry_id": "0_kjb4gz27"
+                "entry_id": "1_3ui8mc5o"
             })
         }
         $(function () {
