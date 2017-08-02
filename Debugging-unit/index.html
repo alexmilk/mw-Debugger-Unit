@@ -24,7 +24,7 @@
 <body>
 
 <div id="errorBar" style="padding-left: 10px">
-    <h4>An error has been logged on the player</h4><button class="btn btn-default btn-xs" id="okError" style="float: left; margin-top: 3px; margin-left: 10px;">OK</button>
+    <h4></h4><button class="btn btn-default btn-xs" id="okError" style="float: left; margin-top: 3px; margin-left: 10px;">OK</button>
 </div>
 <div class="navbarTop">
     <div style="float: left">
@@ -32,7 +32,7 @@
     <div class="dropdown">
     <button class="dropbtn">Player Functions</button>
         <div class="dropdown-content">
-        <a onclick="embed()">Reload player</a>
+        <a onclick="embed();cleanPreviousErrors();">Reload player</a>
         <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
         <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
         <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
@@ -114,7 +114,7 @@
         <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
         <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
         <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
-        <button type="button" onclick="embed()" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
+        <button type="button" onclick="embed();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
@@ -191,11 +191,11 @@
             });
             kdp.kBind('playerError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar h4").append(" - " + errorEvent.message);
+                $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
             });
             kdp.kBind('mediaErrorError', function (errorEvent) {
                 $("#errorBar").slideDown(300);
-                $("#errorBar h4").append(" - " + errorEvent.message);
+                $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
             });
             //OK button handler
             $('#okError').click(function () {
@@ -227,13 +227,21 @@
         });
 
         function setKS() {
+            $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+            $("#errorBar h4").empty();
+            $("#errorBar").slideUp(300);
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
                 let input = document.getElementById("ksInput").value;
                 kdp.setKDPAttribute('servicesProxy.kalturaClient', 'ks', input);
-            })
+            });
+            cleanPreviousErrors();
         }
-
+        function cleanPreviousErrors(){
+            if($("#errorBar h4").text().length > 2) {
+                $("#errorBar h4").text('');
+            }
+        }
         function doPlay() {
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
@@ -335,13 +343,15 @@
             let jsonContent = document.getElementById('appendJSON');
             window.open('_blank').document.write(jsonContent.innerHTML);
         }
-        $("#getSource").click(function () {
+        let getSource = $("#getSource");
+        getSource.click(function () {
             let playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
             for (let i = 0; i < playerSources.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
             }
         });
-        $("#getCaptions").click(function () {
+        let getCaptions = $("#getCaptions");
+        getCaptions.click(function () {
             let playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
             for (let i = 0; i < playerCaptions.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
@@ -438,6 +448,8 @@
                     entry = "0_kjb4gz27";
                 }
                 $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+                $("#errorBar").slideUp(300);
+                cleanPreviousErrors();
             var str = $('.uivarsOverride').val();
             str = str.split("\n").join('');
             var myJson;
@@ -464,12 +476,14 @@
     <!--Main embed script-->
     <script>
         function embed() {
+            $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+            $("#errorBar").slideUp(300);
+            cleanPreviousErrors();
             $("#updateNotification").fadeOut(500);
             var adInput = $('#adTagId').val();
             if ($('#adTagId').val().length <= 0) {
                 adInput = null
             }
-            $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
             mw.setConfig("debugTarget", "analyticsLog");
