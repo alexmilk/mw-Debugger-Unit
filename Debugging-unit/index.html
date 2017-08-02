@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 
+<!--/*!-->
+<!--* mwDebuggerUnit-->
+<!--* 1.0-->
+<!--*-->
+<!--* Copyright(c) 2017 Alex Milkis <alex.milkis@kaltura.com>-->
+<!--* MIT Licensed. http://www.opensource.org/licenses/mit-license.php-->
+<!--*-->
+<!--* http://corp.kaltura.com-->
+<!--*/-->
+
 <head>
     <title>mwDebugger Unit v1.0</title>
     <!--Scripts sections-->
@@ -23,24 +33,36 @@
     <div style="float: left">
     <a class="dropbtn">Home</a>
     <div class="dropdown">
-    <button class="dropbtn">Functions</button>
+    <button class="dropbtn">Player Functions</button>
         <div class="dropdown-content">
         <a onclick="embed()">Reload player</a>
+        <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
         <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
-            <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
-            <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
+        <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
+        <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Tools</button>
+        <button class="dropbtn">Video Debugging Tools</button>
         <div class="dropdown-content">
             <a href="#">Get video aspect ratio</a>
-            <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
-            <a href="#" id="testOnVast" onclick="goToVast()">Test ad on Vast inspector</a>
-            <a href="#">Standalone Dash Shaka player</a>
-            <a href="#">Standalone HLS.JS player</a>
+            <a href="https://shaka-player-demo.appspot.com/demo/" target="_blank">Standalone Dash Shaka player</a>
+            <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
+            <a href="http://players.akamai.com/hds/" target="_blank">Standalone Akamai HDS player</a>
+            <a href="http://players.akamai.com/hls/" target="_blank">Standalone Akamai HLS player</a>
         </div>
-    </div>    <div class="dropdown">
+    </div>
+        <div class="dropdown">
+            <button class="dropbtn">Ad Debugging Tools</button>
+            <div class="dropdown-content">
+                <a href="#" id="testOnVast" onclick="goToVast()">Test on Google VAST inspector</a>
+                <a href="https://i.loopme.me/html/vpaid/test-page.html" target="_blank">VPAID ad tester</a>
+                <a href="tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
+                <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
+                <a href="www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
+            </div>
+        </div>
+        <div class="dropdown">
         <button class="dropbtn">Commands</button>
         <div class="dropdown-content">
             <a href="#" id="cleanMedia">Unload video asset</a>
@@ -53,7 +75,7 @@
     <div style="float: right; height: 25px; width: 600px; padding-right: 20px; padding-top: 2px">
         <form class="form-inline pull-right">
             <div class="form-group">
-                <input type="search" class="form-control input-sm" style="height: 19px !important;" id="searchInput" placeholder="Search Anything">
+                <input type="search" class="form-control input-sm" style="height: 19px !important;" id="searchInput" placeholder="Search VPaaS">
             </div>
             <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important;">Search</button>
         </form>
@@ -64,7 +86,6 @@
 <div id="topHeaderDiv">
     <div class="containerLeft">
         <h2>mwDebugger Unit v1.0</h2>
-
         <h6 id="uiconfText"></h6>
         <h6 id="entryIdText"></h6>
         <h6 id="loadTime"></h6>
@@ -73,7 +94,7 @@
 
 <div class="containerRight">
     <!--QRCode Generator - Google Charts-->
-    <p><img src="" alt="Grab me" id="generateMe" /></p>
+    <p><img src="" id="generateMe" /></p>
     <script type="text/javascript">
         let ele = document.getElementById("generateMe");
         ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
@@ -97,7 +118,6 @@
         <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
         <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
         <button type="button" onclick="embed()" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
-
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
@@ -144,11 +164,15 @@
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
-                $("#entryIdText").append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
-                $("#uiconfText").append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
+                let entryIdField = $("#entryIdText");
+                let uiconfIdField = $("#uiconfText");
+                let loadTimeField = $("#loadTime");
+                let appVersionField = $("#appVersion");
                 let loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-                $("#loadTime").prepend("Page loaded in " + loadedTime + " milliseconds");
-                $("#appVersion").append("User agent: " + clientInformation.appVersion);
+                entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
+                uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
+                loadTimeField.prepend("Page loaded in " + loadedTime + " milliseconds");
+                appVersionField.append("User agent: " + clientInformation.appVersion);
             });
             kdp.kBind('mediaReady', function () {
                 $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
@@ -278,7 +302,8 @@
                 document.getElementById('removePlay').textContent = "Hide play button";
             }
         });
-        $("#hideControls").click(function () {
+        let hideControls = $("#hideControls");
+        hideControls.click(function () {
             const hideControls = $("#kPlayer_ifp_ifp").contents()[0];
             const controls = window.kPlayer_ifp_ifp.document.querySelector('.controlBarContainer');
             if (controls.style.display == "none") {
