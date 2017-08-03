@@ -54,9 +54,9 @@
             <div class="dropdown-content">
                 <a href="#" id="testOnVast" onclick="goToVast()">Test on Google VAST inspector</a>
                 <a href="https://i.loopme.me/html/vpaid/test-page.html" target="_blank">VPAID ad tester</a>
-                <a href="tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
+                <a href="http://tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
                 <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
-                <a href="www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
+                <a href="http://www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
             </div>
         </div>
         <div class="dropdown">
@@ -190,19 +190,17 @@
                 $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
             });
             kdp.kBind('playerError', function (errorEvent) {
+                if($("#errorBar h4").text().length === 0) {
                 $("#errorBar").slideDown(300);
                 $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
-            });
-            kdp.kBind('mediaErrorError', function (errorEvent) {
-                $("#errorBar").slideDown(300);
-                $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
-            });
+            }});
             //OK button handler
             $('#okError').click(function () {
                 $('#errorBar').slideUp(300);
             });
-            kdp.kBind('bumperStarted', function () {
+            kdp.kBind('entryReady', function () {
                 $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
+                cleanPreviousErrors();
             });
             kdp.kBind('postSequenceStart', function () {
                 $("#analyticsLog").append("Playing Post Sequence.\n<br>").addClass("greenText");
@@ -228,18 +226,18 @@
 
         function setKS() {
             $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
-            $("#errorBar h4").empty();
-            $("#errorBar").slideUp(300);
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
                 let input = document.getElementById("ksInput").value;
                 kdp.setKDPAttribute('servicesProxy.kalturaClient', 'ks', input);
+                cleanPreviousErrors();
             });
             cleanPreviousErrors();
         }
         function cleanPreviousErrors(){
             if($("#errorBar h4").text().length > 2) {
                 $("#errorBar h4").text('');
+                $('#errorBar').slideUp(300);
             }
         }
         function doPlay() {
