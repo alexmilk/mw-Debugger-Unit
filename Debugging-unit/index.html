@@ -157,6 +157,7 @@
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
     <script>
+        var runtimeFields = $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion");
         //kBinds and other functions
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
@@ -217,7 +218,8 @@
                 });
             })
         }
-        $("#cleanMedia").click(function () {
+        let cleanMedia = $("#cleanMedia");
+        cleanMedia.click(function () {
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
                 kdp.sendNotification("cleanMedia");
@@ -225,7 +227,7 @@
         });
 
         function setKS() {
-            $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+            runtimeFields.empty();
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
                 let input = document.getElementById("ksInput").value;
@@ -281,7 +283,8 @@
         });
 
         // Top menu buttons and logic
-        $("#removeThumb").click(function () {
+        let removeThumb = $("#removeThumb");
+        removeThumb.click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
             const playerThumb = $(playerContent).find("#kPlayer_ifp");
             if ($(playerThumb).css("visibility") == 'visible') {
@@ -293,7 +296,8 @@
                 document.getElementById('removeThumb').textContent = "Hide thumbnail";
             }
         });
-        $("#removePlay").click(function () {
+        let removePlay = $("#removePlay");
+        removePlay.click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
             const playButton = $(playerContent).find(".largePlayBtn");
             if ($(playButton).css("display") == 'block') {
@@ -445,7 +449,7 @@
                 if ($('#entryId').val().length <= 0) {
                     entry = "0_kjb4gz27";
                 }
-                $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+                runtimeFields.empty();
                 $("#errorBar").slideUp(300);
                 cleanPreviousErrors();
             var str = $('.uivarsOverride').val();
@@ -474,7 +478,7 @@
     <!--Main embed script-->
     <script>
         function embed() {
-            $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion").empty();
+            runtimeFields.empty();
             $("#errorBar").slideUp(300);
             cleanPreviousErrors();
             $("#updateNotification").fadeOut(500);
