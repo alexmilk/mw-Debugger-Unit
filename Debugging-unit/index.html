@@ -74,7 +74,7 @@
             <div class="form-group">
                 <input type="search" class="form-control input-sm" style="height: 19px !important;" id="searchInput" placeholder="Search VPaaS">
             </div>
-            <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important;">Search</button>
+            <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important;" onclick="vpaasSearch()">Search</button>
         </form>
     </div>
     </div>
@@ -225,7 +225,10 @@
                 kdp.sendNotification("cleanMedia");
             })
         });
-
+        function vpaasSearch() {
+            let searchTerm = $('#searchInput').val();
+            window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
+        }
         function setKS() {
             runtimeFields.empty();
             kWidget.addReadyCallback(function (playerId) {
@@ -404,14 +407,6 @@
     </script>
 
     <script>
-//        var onUseUiconfCheck = function (){
-//            if($('#useUiconfVersion').prop('checked') == true){
-//                $('#specificVersions').hide();
-//            } else {
-//                $('#specificVersions').show();
-//            }
-//
-//        };
         //Custom embed code loader script.
         function buildPath() {
             var path;
@@ -449,7 +444,7 @@
                 if ($('#entryId').val().length <= 0) {
                     entry = "0_kjb4gz27";
                 }
-                runtimeFields.empty();
+                runtimeFields.text('');
                 $("#errorBar").slideUp(300);
                 cleanPreviousErrors();
             var str = $('.uivarsOverride').val();
@@ -478,7 +473,7 @@
     <!--Main embed script-->
     <script>
         function embed() {
-            runtimeFields.empty();
+            runtimeFields.text('');
             $("#errorBar").slideUp(300);
             cleanPreviousErrors();
             $("#updateNotification").fadeOut(500);
@@ -521,7 +516,7 @@
 
 <div style="width:1125px; height: auto; margin: 0 auto;">
     <div style="clear: both;"></div>
-    <button type="button" class="btn btn-primary btn-xs" style="float: right;" onclick=$("#analyticsLog").empty();>Clear log</button>
+    <button type="button" class="btn btn-primary btn-xs" style="float: right;" onclick=$("#analyticsLog").text('');>Clear log</button>
     <button type="button" class="btn btn-primary btn-xs" onclick=downloadJSON()>Download JSON</button>
 </div>
 <div style="clear: both;"></div>
