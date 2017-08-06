@@ -79,7 +79,7 @@
     </div>
     </div>
 <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
 
 <!-- VPASS Modal -->
 <!--<div id="myModal" class="modal fade" role="dialog">-->
@@ -300,9 +300,9 @@
         kWidget.addReadyCallback(function (playerId) {
             let kdp = document.getElementById(playerId);
             kdp.kBind('playerReady', function () {
-                let playerFrame = document.kPlayer_ifp_ifp;
-                $("#appendJSON").append(JSON.stringify(playerFrame.kalturaIframePackageData.playerConfig.plugins, null, 2));
-                $(".mw-debug-info").append(playerFrame.kalturaIframePackageData.playerConfig.plugins.debugInfo);
+                let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
+                $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
+                $(".mw-debug-info").append(playerPlugins.debugInfo);
                 return false;
             })
         });
