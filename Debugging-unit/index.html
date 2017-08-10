@@ -165,11 +165,9 @@
         <div id="customEmbedParams">
             <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
-                <input id="embedPathSelector" type="checkbox" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library. (For localhost environment only)</samp><br>
-                <input id="secureSelector1" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
-                <input id="secureSelector2" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
-                <input id="secureSelector3" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
-
+                <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local embed code</samp><br>
+                <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use CDN embed code</samp><br>
+                <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use secure embed code</samp><br>
                 <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
@@ -454,19 +452,35 @@
     <script>
         //Custom embed code loader script.
         function buildPath() {
+            var partner = "_" + $('#partnerId').val();
+            if ($('#partnerId').val().length <= 0) {
+                partner = "1666321";
+            }
+            var uiconf = $('#uiconfId').val();
+            if ($('#uiconfId').val().length <= 0) {
+                uiconf = "39120681";
+            }
             var path;
-            if($('#embedPathSelector').prop('checked')){
-                path = '/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
-                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
-            } else {
-                path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
-                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
-            } if ($('#secureSelector').prop('checked')){
-                path = '/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
-                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
-
-            secureSelector
-            $.getScript(path, function (data, textStatus, jqxhr) {
+            var radioInputs = $('#selectLocal,#selectCdn,#selectSecure');
+            for (var i = 0; i < radioInputs.length; i++){
+                if (radioInputs[i].checked){
+                    path = radioInputs[i].id;
+                }
+            }
+            var endPoint;
+            switch (path) {
+                case "selectLocal":
+                    endPoint = '/mwEmbed/mwEmbedLoader.php/p/' + partner + '/sp/' + partner +
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner + "?&debug=true";
+                    break;
+                case "selectCdn":
+                    endPoint = 'http://cdnapi.kaltura.com/p/' + partner + '/sp/' + partner +
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner;
+                case "selectSecure":
+                    endPoint = 'https://cdnsecakmi.kaltura.com/p/' + partner + '/sp/' + partner +
+                    '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner ;
+            }
+            $.getScript(endPoint, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                     reembedPlayer();
                 } else {
@@ -483,11 +497,11 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
                 var partner = "_" + $('#partnerId').val();
                 if ($('#partnerId').val().length <= 0) {
-                    partner = "_1666321";
+                    partner = "1666321";
                 }
                 var uiconf = $('#uiconfId').val();
                 if ($('#uiconfId').val().length <= 0) {
-                    uiconf = "39652642";
+                    uiconf = "39120681";
                 }
                 var entry = $('#entryId').val();
                 if ($('#entryId').val().length <= 0) {
@@ -501,7 +515,9 @@
             var myJson;
             try{
                 if(str){
-                    myJson = $.parseJSON(str);
+                 myJson = $.parseJSON(str);
+                } else {
+                    myJson = {};
                 }
             } catch(error){
                 alert('Please validate your JSON');
@@ -509,7 +525,7 @@
             }
             const newEmbed = {
                 "targetId": "kPlayer_ifp",
-                "wid": partner,
+                "wid": "_" + partner,
                 "uiconf_id": uiconf,
                 "flashvars": myJson,
                 "cache_st": Date.now(),
