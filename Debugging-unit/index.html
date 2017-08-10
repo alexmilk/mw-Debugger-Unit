@@ -13,19 +13,62 @@
     <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
-    <script src="/mwEmbed/mwEmbedLoader.php/p/1955031/sp/195503100/embedIframeJs/uiconf_id/37558971/partner_id/1955031"></script>
+    <!--<script src="/mwEmbed/mwEmbedLoader.php/p//sp/195503100/embedIframeJs/uiconf_id/37558971/partner_id/1955031"></script>-->
     <link rel="stylesheet" href="css/mainStyles.css">
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="pluginPresets.js"></script>
+
 </head>
 
 <body>
-
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
+        $('#myModal').modal('show');
+    });
+    function hideModal() {
+        $('#myModal').modal('hide');
+    }
+</script>
 <div id="errorBar" style="padding-left: 10px">
     <h4></h4><button class="btn btn-default btn-xs" id="okError" style="float: left; margin-top: 3px; margin-left: 10px;">OK</button>
+</div>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Please enter embed params:</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <colgroup>
+                        <col span="1" style="background-color:white">
+                        <col style="background-color:white">
+                    </colgroup>
+
+                    <tr>
+                        <td><h5>Partner Id:</h5></td>
+                        <td><input id="partnerPrototype" style="margin-left: 20px;" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td><h5>Player Id:</h5></td>
+                        <td><input id="playerPrototype" style="margin-left: 20px;" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td><h5>Entry Id:</h5></td>
+                        <td><input id="entryPrototype" style="margin-left: 20px;" type="text"/></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="embedWidget();hideModal()">Submit</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="navbarTop">
     <div style="float: left">
@@ -33,7 +76,7 @@
     <div class="dropdown">
     <button class="dropbtn">Player Functions</button>
         <div class="dropdown-content">
-        <a onclick="embed();cleanPreviousErrors();">Reload player</a>
+        <a onclick="buildPath();cleanPreviousErrors();">Reload player</a>
         <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
         <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
         <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
@@ -138,7 +181,7 @@
         <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
         <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
         <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
-        <button type="button" onclick="embed();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
+        <button type="button" onclick="buildPath();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
@@ -187,57 +230,6 @@
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
 </div>
     <script>
-        var runtimeFields = $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion");
-        //kBinds and other functions
-        kWidget.addReadyCallback(function (playerId) {
-            let kdp = document.getElementById(playerId);
-            kdp.kBind('playerReady', function () {
-                let entryIdField = $("#entryIdText");
-                let uiconfIdField = $("#uiconfText");
-                let loadTimeField = $("#loadTime");
-                let appVersionField = $("#appVersion");
-                let loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-                entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
-                uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
-                loadTimeField.prepend("Page loaded in " + loadedTime + " milliseconds");
-                appVersionField.append("User agent: " + clientInformation.appVersion);
-            });
-            kdp.kBind('mediaReady', function () {
-                $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
-            });
-            kdp.kBind('adEnd', function () {
-                $("#analyticsLog").append("Ad Ended\n<br>").addClass('greenText');
-            });
-            kdp.kBind('postSequenceStart', function () {
-                $("#analyticsLog").append("Post Sequence Started\n<br>").addClass('greenText');
-            });
-            kdp.kBind('firstPlay', function () {
-                $("#analyticsLog").append("First Play\n<br>").addClass('greenText');
-            });
-            kdp.kBind('doPause', function () {
-                $("#analyticsLog").append("Player Paused\n<br>").addClass("greenText");
-            });
-            kdp.kBind('doPlay', function () {
-                $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
-            });
-            kdp.kBind('playerError', function (errorEvent) {
-                if($("#errorBar h4").text().length === 0) {
-                $("#errorBar").slideDown(300);
-                $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
-            }});
-            //OK button handler
-            $('#okError').click(function () {
-                $('#errorBar').slideUp(300);
-            });
-            kdp.kBind('entryReady', function () {
-                $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
-                cleanPreviousErrors();
-            });
-            kdp.kBind('postSequenceStart', function () {
-                $("#analyticsLog").append("Playing Post Sequence.\n<br>").addClass("greenText");
-            })
-        });
-
         //The mainBrain
         function setEntry() {
             kWidget.addReadyCallback(function (playerId) {
@@ -305,15 +297,6 @@
                 $("#customEmbedParams").slideUp(500);
             }
         }
-        kWidget.addReadyCallback(function (playerId) {
-            let kdp = document.getElementById(playerId);
-            kdp.kBind('playerReady', function () {
-                let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
-                $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
-                $(".mw-debug-info").append(playerPlugins.debugInfo);
-                return false;
-            })
-        });
 
         // Top menu buttons and logic
         let removeThumb = $("#removeThumb");
@@ -450,6 +433,8 @@
     </script>
 
     <script>
+        var runtimeFields = $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion");
+
         //Custom embed code loader script.
         function buildPath() {
             var partner = "_" + $('#partnerId').val();
@@ -476,6 +461,7 @@
                 case "selectCdn":
                     endPoint = 'http://cdnapi.kaltura.com/p/' + partner + '/sp/' + partner +
                         '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner;
+                    break;
                 case "selectSecure":
                     endPoint = 'https://cdnsecakmi.kaltura.com/p/' + partner + '/sp/' + partner +
                     '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner ;
@@ -536,11 +522,24 @@
     </script>
     <!--Main embed script-->
     <script>
-        function embed() {
-            runtimeFields.text('');
-            $("#errorBar").slideUp(300);
+        var embedWidget = function () {
+            var embedPath ='/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerPrototype').val() + '/sp/' + $('#partnerPrototype').val() +
+                '00/embedIframeJs/uiconf_id/' + $('#playerPrototype').val() + '/partner_id/' + $('#partnerPrototype').val() + "?&debug=true";
+            $.getScript(embedPath, function (data, textStatus, jqxhr) {
+                if (jqxhr.status === 200) {
+                    embed();
+                } else {
+                    alert("Script failed to load. Cannot render player :(");
+                }
+            })};
+            var embed = function (){
+                var partnerPrototype = $('#partnerPrototype').val();
+                var playerPrototype = $('#playerPrototype').val();
+                var entryPrototype = $('#entryPrototype').val();
             cleanPreviousErrors();
+            $("#errorBar").slideUp(300);
             $("#updateNotification").fadeOut(500);
+            runtimeFields.text('');
             var adInput = $('#adTagId').val();
             if ($('#adTagId').val().length <= 0) {
                 adInput = null
@@ -552,26 +551,66 @@
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
             kWidget.embed({
                 "targetId": "kPlayer_ifp",
-                "wid": "_1955031",
-                "uiconf_id": 37558971,
-                "flashvars": {
-                    "autoPlay": true,
-                    "debugInfo.isVisible": false,
-                    "DoubleClick": {
-                        "plugin": true,
-                        "adTagUrl": adInput,
-                        "prerollUrlJs": "",
-                        "leadWithFlash": true,
-                        "trackCuePoints": false,
-                        "debugMode": true, //Should enable debugMode for DoubleClick systems.
-                        "adsManagerLoadedTimeout": 15000
-                    },
-                    "playlistAPI.plugin": false
-                },
+                "wid": "_" + partnerPrototype,
+                "uiconf_id": playerPrototype,
+                "flashvars": {},
                 "cache_st": Date.now(),
-                "entry_id": "1_3ui8mc5o"
-            })
-        }
+                "entry_id": entryPrototype
+            });
+                //kBinds and other functions
+                kWidget.addReadyCallback(function (playerId) {
+                    let kdp = document.getElementById(playerId);
+                    kdp.kBind('playerReady', function () {
+                        let entryIdField = $("#entryIdText");
+                        let uiconfIdField = $("#uiconfText");
+                        let loadTimeField = $("#loadTime");
+                        let appVersionField = $("#appVersion");
+                        let loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
+                        entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
+                        uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
+                        loadTimeField.prepend("Page loaded in " + loadedTime + " milliseconds");
+                        appVersionField.append("User agent: " + clientInformation.appVersion);
+                        let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
+                        $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
+                        $(".mw-debug-info").append(playerPlugins.debugInfo);
+                    });
+
+                    kdp.kBind('mediaReady', function () {
+                        $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
+                    });
+                    kdp.kBind('adEnd', function () {
+                        $("#analyticsLog").append("Ad Ended\n<br>").addClass('greenText');
+                    });
+                    kdp.kBind('postSequenceStart', function () {
+                        $("#analyticsLog").append("Post Sequence Started\n<br>").addClass('greenText');
+                    });
+                    kdp.kBind('firstPlay', function () {
+                        $("#analyticsLog").append("First Play\n<br>").addClass('greenText');
+                    });
+                    kdp.kBind('doPause', function () {
+                        $("#analyticsLog").append("Player Paused\n<br>").addClass("greenText");
+                    });
+                    kdp.kBind('doPlay', function () {
+                        $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
+                    });
+                    kdp.kBind('playerError', function (errorEvent) {
+                        if($("#errorBar h4").text().length === 0) {
+                            $("#errorBar").slideDown(300);
+                            $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
+                        }});
+                    //OK button handler
+                    $('#okError').click(function () {
+                        $('#errorBar').slideUp(300);
+                    });
+                    kdp.kBind('entryReady', function () {
+                        $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
+                        cleanPreviousErrors();
+                    });
+                    kdp.kBind('postSequenceStart', function () {
+                        $("#analyticsLog").append("Playing Post Sequence.\n<br>").addClass("greenText");
+                    })
+                });
+            };
         $(function () {
             embed();
         });
@@ -585,7 +624,7 @@
 </div>
 <div style="clear: both;"></div>
 <div id="footer">
-    <p id="footer p">Created by Alex Milkis. Kaltura Customer Care 2017 &copy;</p></div>
+    <p id="footer p" style="margin: 0 !important;">Created by Alex Milkis. Kaltura Customer Care 2017 &copy;</p></div>
 
 </body>
 
