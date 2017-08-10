@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="pluginPresets.js"></script>
 </head>
 
 <body>
@@ -164,12 +165,20 @@
         <div id="customEmbedParams">
             <p>Please enter valid embed settings:</p>
             <form onsubmit="return false;">
-                <input id="embedPathSelector" type="checkbox" checked="true" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library. (For localhost environment only)</samp><br>
+                <input id="embedPathSelector" type="checkbox" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local mwEmbed library. (For localhost environment only)</samp><br>
+                <input id="secureSelector1" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
+                <input id="secureSelector2" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
+                <input id="secureSelector3" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use Secure embed code</samp><br>
+
                 <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
                 <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
+                <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
+                    <option selected disabled>Select a plugin preset</option>
+                </select>
             </form>
+
             <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
         </div>
     </div><br>
@@ -411,12 +420,25 @@
             for (let prop in adSlots) {
                 $("#adSlotSelector").append( "<option value= " + prop + ">" + adSlots[prop].slotType + "</option>" )
             }
+                for (let prop in plugins) {
+                    $("#pluginSelector").append( "<option value= " + prop + ">" + plugins[prop].displayName + "</option>" )
+                }
+
+
         });
         function appendSlot(event){
             var prop = $(event.target).val();
             var $adTag = $("#adTagId");
-            $("#adTagId").val(adSlots[prop].adTagUrl);
+            $adTag.val(adSlots[prop].adTagUrl);
             $adTag.focus();
+            $("#updateNotification").fadeIn(500);
+        }
+
+        function appendPlugin(event){
+            var prop = $(event.target).val();
+            var $uiVarsEditor = $(".uivarsOverride");
+            $uiVarsEditor.val(JSON.stringify(plugins[prop].json, null, 2));
+            $uiVarsEditor.focus();
             $("#updateNotification").fadeIn(500);
         }
         function showReloadWarning() {
@@ -439,7 +461,11 @@
             } else {
                 path = 'http://cdnapi.kaltura.com/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
                     '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
-            }
+            } if ($('#secureSelector').prop('checked')){
+                path = '/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerId').val() + '/sp/' + $('#partnerId').val() +
+                    '00/embedIframeJs/uiconf_id/' + $('#uiconfId').val() + '/partner_id/' + $('#partnerId').val() + "?&debug=true";
+
+            secureSelector
             $.getScript(path, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                     reembedPlayer();
