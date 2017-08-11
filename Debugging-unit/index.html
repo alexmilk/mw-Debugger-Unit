@@ -44,6 +44,7 @@
                 <h4 class="modal-title">Please enter embed params:</h4>
             </div>
             <div class="modal-body">
+                <img src="images/station1.jpg" class="pull-right" style="width: 100px; height: 100px; margin-right: 80px;">
                 <table>
                     <colgroup>
                         <col span="1" style="background-color:white">
@@ -53,16 +54,20 @@
                     <tr>
                         <td><h5>Partner Id:</h5></td>
                         <td><input id="partnerPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//1666321</i></h7></td>
                     </tr>
                     <tr>
                         <td><h5>Player Id:</h5></td>
                         <td><input id="playerPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//39120681</i></h7></td>
                     </tr>
                     <tr>
                         <td><h5>Entry Id:</h5></td>
                         <td><input id="entryPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//0_kjb4gz27</i></h7></td>
                     </tr>
                 </table>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="embedWidget();hideModal()">Submit</button>
@@ -195,13 +200,13 @@
         </form>
         <h7 style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</h7><br>
         <input class="inputBox" style="width: 300px;" type="text" oninput="showReloadWarning()" id="adTagId" />
-        <button type="button" class="btn btn-primary btn-xs" style="margin: 0;" onclick=embed()>Apply new adtag
+        <button type="button" class="btn btn-primary btn-xs" style="margin: 0;" onclick=checkAdTag()>Check adtag
     </button>
         <select id="adSlotSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendSlot(event)">
             <option selected disabled>Select sample ad tag</option>
         </select>
 
-        <div class="alert alert-warning alert-dismissible" id="updateNotification" role="alert" style="width: 450px; margin-top: 5px;">
+        <div class="alert alert-warning alert-dismissible" id="updateNotification" role="alert" style="display: none; width: 450px; margin-top: 5px;">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             Don't forget to reload the player after making any changes.
         </div>
@@ -211,8 +216,8 @@
                 <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local embed code</samp><br>
                 <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use CDN embed code</samp><br>
                 <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use secure embed code</samp><br>
-                <input id="partnerId" class="inputBox" type="text" placeholder="Partner Id"/><br>
-                <input id="uiconfId" class="inputBox" placeholder="Player Id"/><br>
+                <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
+                <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
                 <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
                 <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
                 <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
@@ -281,12 +286,10 @@
             })
         }
 
-        function callAd() {
-            kWidget.addReadyCallback(function (playerId) {
+        function checkAdTag() {
                 let adInput = $('#adTagId').val();
                 window.open(adInput);
                 return false;
-            })
         }
 
         function changeEmbed() {
@@ -377,6 +380,7 @@
         });
         $(document).ready(function () {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
+            $('#appendStats').append("<h5 style='color: white;'>"+ "Monitor is ready." + "</h5>")
         });
         //Preset ad selector for testing
         const adSlots = {
@@ -412,7 +416,6 @@
             var $adTag = $("#adTagId");
             $adTag.val(adSlots[prop].adTagUrl);
             $adTag.focus();
-            $("#updateNotification").fadeIn(500);
         }
 
         function appendPlugin(event){
@@ -523,15 +526,19 @@
     <!--Main embed script-->
     <script>
         var embedWidget = function () {
+            embedWidget.called = true;
             var embedPath ='/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerPrototype').val() + '/sp/' + $('#partnerPrototype').val() +
                 '00/embedIframeJs/uiconf_id/' + $('#playerPrototype').val() + '/partner_id/' + $('#partnerPrototype').val() + "?&debug=true";
             $.getScript(embedPath, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
-                    embed();
+                    if(embedWidget.called) {
+                        embed();
+                    }
                 } else {
                     alert("Script failed to load. Cannot render player :(");
                 }
             })};
+
             var embed = function (){
                 var partnerPrototype = $('#partnerPrototype').val();
                 var playerPrototype = $('#playerPrototype').val();
@@ -611,9 +618,6 @@
                     })
                 });
             };
-        $(function () {
-            embed();
-        });
     </script>
 </div>
 

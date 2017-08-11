@@ -17,25 +17,13 @@ var plugins = [
         }
     } ,
     {
-        "displayName" : "loadingSpinner",
+        "displayName" : "Google Analytics",
         "json" : {
-            "loadingSpinner": {
-                "imageUrl": "",
-                "lines": 10,
-                "lineLength": 10,
-                "width": 6,
-                "radius": 12,
-                "corners": 1,
-                "rotate": 0,
-                "direction": 1,
-                "color": "#ff00ff",
-                "speed": 1.6,
-                "trail": 100,
-                "shadow": false,
-                "className": "spinner",
-                "zIndex": 2000000000,
-                "top": "auto",
-                "left": "auto",
+            "googleAnalytics": {
+                "urchinCode": "UA-49010777-1",
+                "trackEventMonitor": "",
+                "trackingCategory": "Kaltura Video Events",
+                "customEvent": "doPlay,relatedVideoSelect,doPause,doStop,playerPlayed",
                 "plugin": true
             }
         }
