@@ -22,7 +22,7 @@ The instance is using the locally cloned mwEmbed as the main player library, thi
 
 ## Compatibility
 
-The instance is compatible most browser versions and types, please make sure the instance is running on a local server and not from the desktop and etc.
+The instance is compatible on most browser versions and types, please make sure the instance is running on a local server and not from the desktop and etc.
 
 ## License
 
