@@ -10,17 +10,15 @@
 
 <head>
     <title>mwDebugger Unit v1.0</title>
-    <!--Scripts sections-->
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
-    <!--<script src="/mwEmbed/mwEmbedLoader.php/p//sp/195503100/embedIframeJs/uiconf_id/37558971/partner_id/1955031"></script>-->
     <link rel="stylesheet" href="css/mainStyles.css">
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="pluginPresets.js"></script>
-
 </head>
 
 <body>
@@ -54,22 +52,18 @@
                     <tr>
                         <td><h5>Partner Id:</h5></td>
                         <td><input id="partnerPrototype" style="margin-left: 20px;" type="text"/></td>
-                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//1666321</i></h7></td>
                     </tr>
                     <tr>
                         <td><h5>Player Id:</h5></td>
                         <td><input id="playerPrototype" style="margin-left: 20px;" type="text"/></td>
-                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//39120681</i></h7></td>
                     </tr>
                     <tr>
                         <td><h5>Entry Id:</h5></td>
                         <td><input id="entryPrototype" style="margin-left: 20px;" type="text"/></td>
-                        <td><h7 style="margin-left: 10px; font-size: x-small"><i>//0_kjb4gz27</i></h7></td>
                     </tr>
                 </table>
-
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer"><h5 class="pull-left">Leaving blank values will load defaults.</h5>
                 <button type="button" class="btn btn-primary" onclick="embedWidget();hideModal()">Submit</button>
             </div>
         </div>
@@ -127,30 +121,6 @@
         </form>
     </div>
     </div>
-<!-- Trigger the modal with a button -->
-<!--<div class="container">-->
-    <!--<h2>Small Modal</h2>-->
-    <!--&lt;!&ndash; Trigger the modal with a button &ndash;&gt;-->
-    <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button>-->
-
-    <!--&lt;!&ndash; Modal &ndash;&gt;-->
-    <!--<div class="modal fade" id="myModal" role="dialog">-->
-        <!--<div class="modal-dialog modal-sm">-->
-            <!--<div class="modal-content">-->
-                <!--<div class="modal-header">-->
-                    <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-                    <!--<h4 class="modal-title">Modal Header</h4>-->
-                <!--</div>-->
-                <!--<div class="modal-body">-->
-                    <!--<p>This is a small modal.</p>-->
-                <!--</div>-->
-                <!--<div class="modal-footer">-->
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 <!--Player main div-->
 <div id="topHeaderDiv">
     <div class="containerLeft">
@@ -243,7 +213,9 @@
                 kdp.sendNotification("changeMedia", {
                     "entryId": input
                 });
-            })
+            });
+            cleanPreviousErrors();
+            runtimeFields.empty();
         }
         let cleanMedia = $("#cleanMedia");
         cleanMedia.click(function () {
@@ -380,7 +352,7 @@
         });
         $(document).ready(function () {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
-            $('#appendStats').append("<h5 style='color: white;'>"+ "Monitor is ready." + "</h5>")
+            $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>")
         });
         //Preset ad selector for testing
         const adSlots = {
@@ -401,29 +373,35 @@
                 "adTagUrl": null,
             }
         };
-        $(document).ready(function() {
+        $(document).ready( function() {
+            let selectors = {
+                adSlot: $("#adSlotSelector"),
+                plugin: $("#pluginSelector")
+            };
             for (let prop in adSlots) {
-                $("#adSlotSelector").append( "<option value= " + prop + ">" + adSlots[prop].slotType + "</option>" )
+                selectors.adSlot.append( "<option value= " + prop + ">" + adSlots[prop].slotType + "</option>" )
             }
-                for (let prop in plugins) {
-                    $("#pluginSelector").append( "<option value= " + prop + ">" + plugins[prop].displayName + "</option>" )
-                }
-
-
+            for (let prop in plugins) {
+                    selectors.plugin.append( "<option value= " + prop + ">" + plugins[prop].displayName + "</option>" )
+            }
         });
         function appendSlot(event){
-            var prop = $(event.target).val();
-            var $adTag = $("#adTagId");
-            $adTag.val(adSlots[prop].adTagUrl);
-            $adTag.focus();
+            let selectors = {
+                prop: $(event.target).val(),
+                adTag: $("#adTagId")
+            };
+            selectors.adTag.val(adSlots[selectors.prop].adTagUrl);
+            selectors.adTag.focus();
         }
 
         function appendPlugin(event){
-            var prop = $(event.target).val();
-            var $uiVarsEditor = $(".uivarsOverride");
-            $uiVarsEditor.val(JSON.stringify(plugins[prop].json, null, 2));
-            $uiVarsEditor.focus();
-            $("#updateNotification").fadeIn(500);
+            let selectors = {
+                prop: $(event.target).val(),
+                varsDiv: $(".uivarsOverride")
+            };
+            selectors.varsDiv.val(JSON.stringify(plugins[selectors.prop].json, null, 2));
+            selectors.varsDiv.focus();
+            showReloadWarning();
         }
         function showReloadWarning() {
             $("#updateNotification").fadeIn(500);
@@ -436,16 +414,16 @@
     </script>
 
     <script>
-        var runtimeFields = $("#appendJSON,#loadTime,#entryIdText,#uiconfText,#appVersion");
+        var runtimeFields = $("#appendJSON,#appendStats,#loadTime,#entryIdText,#uiconfText,#appVersion");
 
         //Custom embed code loader script.
         function buildPath() {
             var partner = "_" + $('#partnerId').val();
-            if ($('#partnerId').val().length <= 0) {
+            if (partner.length <= 0) {
                 partner = "1666321";
             }
             var uiconf = $('#uiconfId').val();
-            if ($('#uiconfId').val().length <= 0) {
+            if (uiconf.length <= 0) {
                 uiconf = "39120681";
             }
             var path;
@@ -526,27 +504,43 @@
     <!--Main embed script-->
     <script>
         var embedWidget = function () {
-            embedWidget.called = true;
-            var embedPath ='/mwEmbed/mwEmbedLoader.php/p/' + $('#partnerPrototype').val() + '/sp/' + $('#partnerPrototype').val() +
-                '00/embedIframeJs/uiconf_id/' + $('#playerPrototype').val() + '/partner_id/' + $('#partnerPrototype').val() + "?&debug=true";
+            var partner = $('#partnerPrototype').val();
+            if (partner.length <= 0) {
+                partner = "1666321";
+            }
+            var uiconf = $('#playerPrototype').val();
+            if (uiconf.length <= 0) {
+                uiconf = "39120681";
+            }
+            var entryId = $('#entryPrototype').val();
+            if (entryId.length <= 0) {
+                entryId = "0_kjb4gz27";
+            }
+            var embedPath ='/mwEmbed/mwEmbedLoader.php/p/' + partner + '/sp/' + partner +
+                '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner + "?&debug=true";
             $.getScript(embedPath, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
-                    if(embedWidget.called) {
                         embed();
-                    }
                 } else {
                     alert("Script failed to load. Cannot render player :(");
                 }
             })};
-
             var embed = function (){
                 var partnerPrototype = $('#partnerPrototype').val();
+                if (partnerPrototype.length <= 0) {
+                    partnerPrototype = "1666321";
+                }
                 var playerPrototype = $('#playerPrototype').val();
+                if (playerPrototype.length <= 0) {
+                    playerPrototype = "39120681";
+                }
                 var entryPrototype = $('#entryPrototype').val();
+                if (entryPrototype.length <= 0) {
+                    entryPrototype = "0_kjb4gz27";
+                }
             cleanPreviousErrors();
             $("#errorBar").slideUp(300);
             $("#updateNotification").fadeOut(500);
-            runtimeFields.text('');
             var adInput = $('#adTagId').val();
             if ($('#adTagId').val().length <= 0) {
                 adInput = null
@@ -568,15 +562,17 @@
                 kWidget.addReadyCallback(function (playerId) {
                     let kdp = document.getElementById(playerId);
                     kdp.kBind('playerReady', function () {
-                        let entryIdField = $("#entryIdText");
-                        let uiconfIdField = $("#uiconfText");
-                        let loadTimeField = $("#loadTime");
-                        let appVersionField = $("#appVersion");
-                        let loadedTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-                        entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
-                        uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
-                        loadTimeField.prepend("Page loaded in " + loadedTime + " milliseconds");
-                        appVersionField.append("User agent: " + clientInformation.appVersion);
+                        let runtimes = {
+                            entryIdField: $("#entryIdText"),
+                            uiconfIdField: $("#uiconfText"),
+                            loadTimeField: $("#loadTime"),
+                            appVersionField: $("#appVersion"),
+                            loadedTime: window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart
+                        };
+                        runtimes.entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
+                        runtimes.uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
+                        runtimes.loadTimeField.prepend("Page loaded in " + runtimes.loadedTime + " milliseconds");
+                        runtimes.appVersionField.append("User agent: " + clientInformation.appVersion);
                         let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
                         $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
                         $(".mw-debug-info").append(playerPlugins.debugInfo);
@@ -610,7 +606,6 @@
                         $('#errorBar').slideUp(300);
                     });
                     kdp.kBind('entryReady', function () {
-                        $("#analyticsLog").append("Bumper Started\n<br>").addClass("greenText");
                         cleanPreviousErrors();
                     });
                     kdp.kBind('postSequenceStart', function () {
