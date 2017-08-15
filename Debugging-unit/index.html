@@ -105,7 +105,7 @@
         <div class="dropdown">
         <button class="dropbtn">Commands</button>
         <div class="dropdown-content">
-            <a href="#" id="cleanMedia">Unload video asset</a>
+            <a href="#" id="cleanMedia()">Unload video asset</a>
             <a href="#" id="removeThumb">Remove Thumbnail</a>
             <a href="#" id="removePlay">Remove play button</a>
             <a href="#" id="hideControls">Hide controls bar</a>
@@ -142,13 +142,17 @@
 </div>
     <br>
     <!--The main section Player + Stats-->
-    <div style="width:1125px; height: 335px; margin: auto;">
+    <div style="width:1125px; height: 320px; margin: auto;">
     <!--Main player DIV-->
     <div id="kPlayer_ifp" itemprop="video" itemscope></div>
     <!--Small analytics log DIV-->
-    <pre id="appendStats"></pre></div>
+    <pre id="appendStats"></pre>
+        <div style="clear: both;"></div>
+        <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats">Clear monitor</button>
+    </div>
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
+
     <div id="mainControlDiv">
         <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
         <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
@@ -207,23 +211,14 @@
     <script>
         //The mainBrain
         function setEntry() {
-            kWidget.addReadyCallback(function (playerId) {
-                let kdp = document.getElementById(playerId);
-                let input = document.getElementById("adInput").value;
-                kdp.sendNotification("changeMedia", {
-                    "entryId": input
-                });
-            });
+            let input = document.getElementById("adInput").value;
+            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('changeMedia', {'entryId': input});
             cleanPreviousErrors();
             runtimeFields.empty();
         }
-        let cleanMedia = $("#cleanMedia");
-        cleanMedia.click(function () {
-            kWidget.addReadyCallback(function (playerId) {
-                let kdp = document.getElementById(playerId);
-                kdp.sendNotification("cleanMedia");
-            })
-        });
+        function cleanMedia(){
+            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
+        }
         function vpaasSearch() {
             let searchTerm = $('#searchInput').val();
             window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
@@ -238,24 +233,12 @@
             });
             cleanPreviousErrors();
         }
-        function cleanPreviousErrors(){
-            if($("#errorBar h4").text().length > 2) {
-                $("#errorBar h4").text('');
-                $('#errorBar').slideUp(300);
-            }
-        }
         function doPlay() {
-            kWidget.addReadyCallback(function (playerId) {
-                let kdp = document.getElementById(playerId);
-                kdp.sendNotification("doPlay");
-            })
+            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doPlay');
         }
 
         function doStop() {
-            kWidget.addReadyCallback(function (playerId) {
-                let kdp = document.getElementById(playerId);
-                kdp.sendNotification("doStop");
-            })
+            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
         }
 
         function checkAdTag() {
@@ -263,7 +246,9 @@
                 window.open(adInput);
                 return false;
         }
-
+        $('#clearStats').click(function (){
+            $('#appendStats').text('');
+        });
         function changeEmbed() {
             if ($('#customEmbedParams').css("display") == "none") {
                 $("#customEmbedParams").slideDown(500);
@@ -272,7 +257,12 @@
                 $("#customEmbedParams").slideUp(500);
             }
         }
-
+        function cleanPreviousErrors(){
+            if($("#errorBar h4").text().length > 2) {
+                $("#errorBar h4").text('');
+                $('#errorBar').slideUp(300);
+            }
+        }
         // Thumbnail remover
         let removeThumb = $("#removeThumb");
         removeThumb.click(function () {
@@ -413,7 +403,10 @@
         }
         //Open tinyUrl button
         let tiny = function(){
-            window.open("http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search'), '_blank');
+            let url = "http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search');
+            $.get(url, function( data ) {
+                $( "#appendStats" ).append("<h5>" + data + "</h5>");
+                });
         };
 
     </script>
