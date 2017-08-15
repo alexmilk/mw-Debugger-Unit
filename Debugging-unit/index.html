@@ -273,7 +273,7 @@
             }
         }
 
-        // Top menu buttons and logic
+        // Thumbnail remover
         let removeThumb = $("#removeThumb");
         removeThumb.click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
@@ -287,6 +287,7 @@
                 document.getElementById('removeThumb').textContent = "Hide thumbnail";
             }
         });
+        //Play button remover
         let removePlay = $("#removePlay");
         removePlay.click(function () {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
@@ -300,6 +301,7 @@
                 document.getElementById('removePlay').textContent = "Hide play button";
             }
         });
+        //Player controls hide function
         let hideControls = $("#hideControls");
         hideControls.click(function () {
             const hideControls = $("#kPlayer_ifp_ifp").contents()[0];
@@ -314,28 +316,29 @@
             }
 
         });
-
+        //Vast ad tag referrer
         function goToVast() {
             let vastInspectUrl = 'https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=';
             let playerAdTag = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl;
             window.open(vastInspectUrl + playerAdTag);
         }
-
+        //Active source getter
         function getActiveSource() {
             const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
             const currentSource = playerSource.getSource();
             window.open(currentSource.src, '_blank');
         }
-
+        //Active bitrate getter
         function getActiveBitrate() {
             let playerFrame = document.kPlayer_ifp_ifp.kPlayer_ifp;
             alert(playerFrame.plugins.morePlugins.embedPlayer.currentBitrate);
         }
-
+        //Json Download function
         function downloadJSON() {
             let jsonContent = document.getElementById('appendJSON');
             window.open('_blank').document.write(jsonContent.innerHTML);
         }
+        //Source getter
         let getSource = $("#getSource");
         getSource.click(function () {
             let playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
@@ -343,6 +346,7 @@
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
             }
         });
+        //Caption getter
         let getCaptions = $("#getCaptions");
         getCaptions.click(function () {
             let playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
@@ -385,6 +389,7 @@
                     selectors.plugin.append( "<option value= " + prop + ">" + plugins[prop].displayName + "</option>" )
             }
         });
+        //Ad tag appender
         function appendSlot(event){
             let selectors = {
                 prop: $(event.target).val(),
@@ -393,7 +398,7 @@
             selectors.adTag.val(adSlots[selectors.prop].adTagUrl);
             selectors.adTag.focus();
         }
-
+        //Plugin appender
         function appendPlugin(event){
             let selectors = {
                 prop: $(event.target).val(),
@@ -455,6 +460,7 @@
                 }
             });
         }
+        //Reload player function
         function reembedPlayer() {
             mw.setConfig("EmbedPlayer.ShowPlayerAlerts", true);
             mw.setConfig("debug", true);
@@ -504,6 +510,7 @@
     <!--Main embed script-->
     <script>
         var embedWidget = function () {
+        //Player path defaults
             var partner = $('#partnerPrototype').val();
             if (partner.length <= 0) {
                 partner = "1666321";
@@ -526,6 +533,7 @@
                 }
             })};
             var embed = function (){
+                //Embed defaults
                 var partnerPrototype = $('#partnerPrototype').val();
                 if (partnerPrototype.length <= 0) {
                     partnerPrototype = "1666321";
