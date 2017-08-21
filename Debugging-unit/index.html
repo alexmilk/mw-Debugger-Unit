@@ -148,7 +148,7 @@
     <!--Small analytics log DIV-->
     <pre id="appendStats"></pre>
         <div style="clear: both;"></div>
-        <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats">Clear monitor</button>
+        <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats" onclick="cleanMonitor()">Clear monitor</button>
     </div>
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
@@ -216,9 +216,6 @@
             cleanPreviousErrors();
             runtimeFields.empty();
         }
-        function cleanMedia(){
-            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
-        }
         function vpaasSearch() {
             let searchTerm = $('#searchInput').val();
             window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
@@ -233,22 +230,15 @@
             });
             cleanPreviousErrors();
         }
-        function doPlay() {
-            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doPlay');
-        }
-
-        function doStop() {
-            document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
-        }
-
+        doPlay = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doPlay');
+        doStop = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
+        cleanMedia = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
+        cleanMonitor = () => $('#appendStats').text('');
         function checkAdTag() {
                 let adInput = $('#adTagId').val();
                 window.open(adInput);
                 return false;
         }
-        $('#clearStats').click(function (){
-            $('#appendStats').text('');
-        });
         function changeEmbed() {
             if ($('#customEmbedParams').css("display") == "none") {
                 $("#customEmbedParams").slideDown(500);
@@ -304,7 +294,6 @@
                 controls.style.display = "none";
                 document.getElementById('hideControls').textContent = "Show controls bar";
             }
-
         });
         //Vast ad tag referrer
         function goToVast() {
@@ -395,6 +384,7 @@
             };
             selectors.adTag.val(adSlots[selectors.prop].adTagUrl);
             selectors.adTag.focus();
+            showReloadWarning();
         }
         //Plugin appender
         function appendPlugin(event){
@@ -406,9 +396,7 @@
             selectors.varsDiv.focus();
             showReloadWarning();
         }
-        function showReloadWarning() {
-            $("#updateNotification").fadeIn(500);
-        }
+        showReloadWarning = () => $("#updateNotification").fadeIn(500);
         //Open tinyUrl button
         let tiny = function(){
             let url = "http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search');
@@ -416,7 +404,6 @@
                 $( "#appendStats" ).append("<h5>" + data + "</h5>");
                 });
         };
-
     </script>
 
     <script>
@@ -506,7 +493,6 @@
             };
             document.kPlayer_ifp_ifp.kWidget.embed(newEmbed);
         }
-
     </script>
     <!--Main embed script-->
     <script>
@@ -587,39 +573,17 @@
                         $(".mw-debug-info").append(playerPlugins.debugInfo);
                     });
 
-                    kdp.kBind('mediaReady', function () {
-                        $("#analyticsLog").append("Media Ready\n<br>").addClass('greenText');
-                    });
-                    kdp.kBind('adEnd', function () {
-                        $("#analyticsLog").append("Ad Ended\n<br>").addClass('greenText');
-                    });
-                    kdp.kBind('postSequenceStart', function () {
-                        $("#analyticsLog").append("Post Sequence Started\n<br>").addClass('greenText');
-                    });
-                    kdp.kBind('firstPlay', function () {
-                        $("#analyticsLog").append("First Play\n<br>").addClass('greenText');
-                    });
-                    kdp.kBind('doPause', function () {
-                        $("#analyticsLog").append("Player Paused\n<br>").addClass("greenText");
-                    });
-                    kdp.kBind('doPlay', function () {
-                        $("#analyticsLog").append("Player Playing\n<br>").addClass("greenText");
-                    });
                     kdp.kBind('playerError', function (errorEvent) {
                         if($("#errorBar h4").text().length === 0) {
                             $("#errorBar").slideDown(300);
                             $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
                         }});
-                    //OK button handler
                     $('#okError').click(function () {
                         $('#errorBar').slideUp(300);
                     });
                     kdp.kBind('entryReady', function () {
                         cleanPreviousErrors();
                     });
-                    kdp.kBind('postSequenceStart', function () {
-                        $("#analyticsLog").append("Playing Post Sequence.\n<br>").addClass("greenText");
-                    })
                 });
             };
     </script>
