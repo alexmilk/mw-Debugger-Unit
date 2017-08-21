@@ -216,10 +216,10 @@
             cleanPreviousErrors();
             runtimeFields.empty();
         }
-        function vpaasSearch() {
+        vpaasSearch = () => {
             let searchTerm = $('#searchInput').val();
             window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
-        }
+        };
         function setKS() {
             runtimeFields.empty();
             kWidget.addReadyCallback(function (playerId) {
@@ -234,25 +234,26 @@
         doStop = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
         cleanMedia = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
         cleanMonitor = () => $('#appendStats').text('');
-        function checkAdTag() {
-                let adInput = $('#adTagId').val();
-                window.open(adInput);
-                return false;
-        }
-        function changeEmbed() {
+        checkAdTag = () => {
+            let adInput = $('#adTagId').val();
+            window.open(adInput);
+            return false;
+        };
+        //Entry changer
+        changeEmbed = () => {
             if ($('#customEmbedParams').css("display") == "none") {
                 $("#customEmbedParams").slideDown(500);
             }
             else {
                 $("#customEmbedParams").slideUp(500);
             }
-        }
-        function cleanPreviousErrors(){
+        };
+        cleanPreviousErrors = () => {
             if($("#errorBar h4").text().length > 2) {
                 $("#errorBar h4").text('');
                 $('#errorBar').slideUp(300);
             }
-        }
+        };
         // Thumbnail remover
         let removeThumb = $("#removeThumb");
         removeThumb.click(function () {
@@ -296,27 +297,31 @@
             }
         });
         //Vast ad tag referrer
-        function goToVast() {
+        goToVast = () => {
             let vastInspectUrl = 'https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector?tag=';
             let playerAdTag = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins.doubleClick.adTagUrl;
-            window.open(vastInspectUrl + playerAdTag);
-        }
+            if (playerAdTag === undefined) {
+                alert("DoubleClick is not configured")
+            } else {
+                window.open(vastInspectUrl + playerAdTag);
+            }
+        };
         //Active source getter
-        function getActiveSource() {
+        getActiveSource = () =>{
             const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
             const currentSource = playerSource.getSource();
             window.open(currentSource.src, '_blank');
-        }
+        };
         //Active bitrate getter
-        function getActiveBitrate() {
+        getActiveBitrate = () => {
             let playerFrame = document.kPlayer_ifp_ifp.kPlayer_ifp;
             alert(playerFrame.plugins.morePlugins.embedPlayer.currentBitrate);
-        }
+        };
         //Json Download function
-        function downloadJSON() {
+        downloadJSON = () => {
             let jsonContent = document.getElementById('appendJSON');
             window.open('_blank').document.write(jsonContent.innerHTML);
-        }
+        };
         //Source getter
         let getSource = $("#getSource");
         getSource.click(function () {
