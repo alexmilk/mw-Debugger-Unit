@@ -210,17 +210,17 @@
 </div>
     <script>
         //The mainBrain
-        function setEntry() {
+        setEntry = () => {
             let input = document.getElementById("adInput").value;
             document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('changeMedia', {'entryId': input});
             cleanPreviousErrors();
             runtimeFields.empty();
-        }
+        };
         vpaasSearch = () => {
             let searchTerm = $('#searchInput').val();
             window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
         };
-        function setKS() {
+        setKS = () => {
             runtimeFields.empty();
             kWidget.addReadyCallback(function (playerId) {
                 let kdp = document.getElementById(playerId);
@@ -229,7 +229,7 @@
                 cleanPreviousErrors();
             });
             cleanPreviousErrors();
-        }
+        };
         doPlay = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doPlay');
         doStop = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
         cleanMedia = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
@@ -382,7 +382,7 @@
             }
         });
         //Ad tag appender
-        function appendSlot(event){
+        appendSlot = (event) => {
             let selectors = {
                 prop: $(event.target).val(),
                 adTag: $("#adTagId")
@@ -390,9 +390,9 @@
             selectors.adTag.val(adSlots[selectors.prop].adTagUrl);
             selectors.adTag.focus();
             showReloadWarning();
-        }
+        };
         //Plugin appender
-        function appendPlugin(event){
+        appendPlugin = (event) => {
             let selectors = {
                 prop: $(event.target).val(),
                 varsDiv: $(".uivarsOverride")
@@ -400,10 +400,10 @@
             selectors.varsDiv.val(JSON.stringify(plugins[selectors.prop].json, null, 2));
             selectors.varsDiv.focus();
             showReloadWarning();
-        }
+        };
         showReloadWarning = () => $("#updateNotification").fadeIn(500);
         //Open tinyUrl button
-        let tiny = function(){
+        tiny = () => {
             let url = "http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search');
             $.get(url, function( data ) {
                 $( "#appendStats" ).append("<h5>" + data + "</h5>");
