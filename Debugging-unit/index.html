@@ -63,6 +63,14 @@
                         <td><h5>Entry Id:</h5></td>
                         <td><input id="entryPrototype" style="margin-left: 20px;" type="text"/></td>
                     </tr>
+                    <tr>
+                        <td><input type=radio name="select Embed" style="width: 16px; height: 16px;" id="useLocalEmbed" checked>
+                        <h5 style="display: inline">Use local embed</h5></td>
+                    </tr>
+                    <tr>
+                        <td><input type=radio name="select Embed" style="width: 16px; height: 16px;" id="useCdnEmbed">
+                            <h5 style="display: inline">Use CDN embed</h5></td>
+                    </tr>
                 </table>
             </div>
 
@@ -517,9 +525,25 @@
             if (entryId.length <= 0) {
                 entryId = "0_kjb4gz27";
             }
-            var embedPath ='/mwEmbed/mwEmbedLoader.php/p/' + partner + '/sp/' + partner +
-                '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner + "?&debug=true";
-            $.getScript(embedPath, function (data, textStatus, jqxhr) {
+            var path;
+            var radioInputs = $('#useCdnEmbed,#useLocalEmbed');
+            for (var i = 0; i < radioInputs.length; i++){
+                if (radioInputs[i].checked){
+                    path = radioInputs[i].id;
+                }
+            }
+            var endPoint;
+            switch (path) {
+                case "useLocalEmbed":
+                    endPoint = '/mwEmbed/mwEmbedLoader.php/p/' + partner + '/sp/' + partner +
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner + "?&debug=true";
+                    break;
+                case "useCdnEmbed":
+                    endPoint = 'http://cdnapi.kaltura.com/p/' + partner + '/sp/' + partner +
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner;
+                    break;
+            }
+            $.getScript(endPoint, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                         embed();
                 } else {
