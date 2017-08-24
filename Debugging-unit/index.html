@@ -50,26 +50,26 @@
                         <col span="1" style="background-color:white">
                         <col style="background-color:white">
                     </colgroup>
-
                     <tr>
                         <td><h5>Partner Id:</h5></td>
-                        <td><input id="partnerPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><input class='form-control' id="partnerPrototype" style="margin-left: -20px;" type="text"/></td>
                     </tr>
                     <tr>
                         <td><h5>Player Id:</h5></td>
-                        <td><input id="playerPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><input class='form-control' id="playerPrototype" style="margin-left: -20px;" type="text"/></td>
                     </tr>
                     <tr>
                         <td><h5>Entry Id:</h5></td>
-                        <td><input id="entryPrototype" style="margin-left: 20px;" type="text"/></td>
+                        <td><input class='form-control' id="entryPrototype" style="margin-left: -20px;" type="text"/></td>
                     </tr>
                     <tr>
-                        <td><input type=radio name="select Embed" style="width: 16px; height: 16px;" id="useLocalEmbed" checked>
-                        <h5 style="display: inline">Use local embed</h5></td>
+                        <td><input type=radio name="options" style="width: 16px; height: 15px;" id="useLocalEmbed" checked>
+                            <span class="label label-primary">Use Local embed</span>
+                        </td>
                     </tr>
                     <tr>
-                        <td><input type=radio name="select Embed" style="width: 16px; height: 16px;" id="useCdnEmbed">
-                            <h5 style="display: inline">Use CDN embed</h5></td>
+                        <td><input type=radio name="options" style="width: 16px; height: 15px;" id="useCdnEmbed">
+                            <span class="label label-primary">Use CDN embed</span></td>
                     </tr>
                 </table>
             </div>
@@ -135,7 +135,7 @@
 <!--Player main div-->
     <div id="topHeaderDiv">
     <div class="containerLeft">
-        <h2>mwDebugger Unit v1.0</h2>
+        <h2 id="pageTitle"></h2>
         <h6 id="uiconfText"></h6>
         <h6 id="entryIdText"></h6>
         <h6 id="loadTime"></h6>
@@ -350,8 +350,7 @@
         });
         $(document).ready(function () {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
-            $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>")
-        });
+            $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>");});
         //Preset ad selector for testing
         const adSlots = {
             inlinePreroll: {
@@ -416,9 +415,8 @@
         tiny = () => {
             let url = "http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search');
             $.get(url, function( data ) {
-                $( "#appendStats" ).append("<h5>" + data + "</h5>");
-                });
-        };
+                $("#appendStats").append("<h5>" + data + "</h5>");
+            })};
     </script>
 
     <script>
@@ -589,12 +587,14 @@
                     let kdp = document.getElementById(playerId);
                     kdp.kBind('playerReady', function () {
                         let runtimes = {
+                            pageTitle: $('#pageTitle'),
                             entryIdField: $("#entryIdText"),
                             uiconfIdField: $("#uiconfText"),
                             loadTimeField: $("#loadTime"),
                             appVersionField: $("#appVersion"),
                             loadedTime: window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart
                         };
+                            runtimes.pageTitle.append(kdp.evaluate("{mediaProxy.entry.name}"));
                             runtimes.entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
                             runtimes.uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
                             runtimes.loadTimeField.prepend("Page loaded in " + runtimes.loadedTime + " milliseconds");

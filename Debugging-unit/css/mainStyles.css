@@ -190,6 +190,7 @@ body {
     float: right;
     width: 558px;
     height: 400px;
+    color: white;
     background-color: black;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -293,4 +294,4 @@ body {
 pre {
     white-space: pre-wrap;       /* css-3 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-}}
+}
