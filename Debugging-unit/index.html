@@ -111,8 +111,9 @@
         <a href="http://tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
         <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
         <a href="http://www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
+        <a href="hhttps://www.spotx.tv/tag-generator/" target="_blank">SPOTX Tag Generator</a>
             </div>
-        </div>
+    </div>
         <div class="dropdown">
         <button class="dropbtn">Commands</button>
             <div class="dropdown-content">
@@ -122,16 +123,16 @@
         <a href="#" id="hideControls">Hide controls bar</a>
             </div>
     </div>
-    </div>
+</div>
     <div style="float: right; height: 25px; width: 600px; padding-right: 20px; padding-top: 2px">
         <form class="form-inline pull-right">
             <div class="form-group">
                 <input type="search" class="form-control input-sm" style="height: 19px !important;" id="searchInput" placeholder="Search VPaaS">
             </div>
-            <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important; margin-top: 2px" onclick="vpaasSearch()">Search</button>
+                <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important; margin-top: 2px" onclick="vpaasSearch()">Search</button>
         </form>
     </div>
-    </div>
+</div>
 <!--Player main div-->
     <div id="topHeaderDiv">
     <div class="containerLeft">
@@ -141,37 +142,35 @@
         <h6 id="loadTime"></h6>
         <h6 id="appVersion"></h6>
     </div>
-
 <div class="containerRight">
     <!--QRCode Generator - Google Charts-->
     <p><img src="" id="generateMe" /></p>
-    <script type="text/javascript">
+        <script type="text/javascript">
         let ele = document.getElementById("generateMe");
         ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
-    </script>
+        </script>
     </div>
 </div>
     <br>
-    <!--The main section Player + Stats-->
+        <!--The main section Player + Stats-->
     <div style="width:1125px; height: 320px; margin: auto;">
-    <!--Main player DIV-->
-    <div id="kPlayer_ifp" itemprop="video" itemscope></div>
-    <!--Small analytics log DIV-->
-    <pre id="appendStats"></pre>
+        <!--Main player DIV-->
+        <div id="kPlayer_ifp" itemprop="video" itemscope></div>
+        <!--Small analytics log DIV-->
+        <pre id="appendStats"></pre>
         <div style="clear: both;"></div>
         <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats" onclick="cleanMonitor()">Clear monitor</button>
     </div>
     <!--Control panel & buttons DIV-->
     <div style="clear: both;"></div>
-
-    <div id="mainControlDiv">
-        <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
-        <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
-        <button type="button" class="btn btn-primary btn-xs" onclick=doStop()>Force Stop</button>
-        <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
-        <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
-        <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
-        <button type="button" onclick="buildPath();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
+<div id="mainControlDiv">
+    <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
+    <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
+    <button type="button" class="btn btn-primary btn-xs" onclick=doStop()>Force Stop</button>
+    <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
+    <button type="button" id="getCaptions" class="btn btn-primary btn-xs">get Captions</button>
+    <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
+    <button type="button" onclick="buildPath();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
 
         <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
         <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
@@ -194,24 +193,23 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             Don't forget to reload the player after making any changes.
         </div>
-        <div id="customEmbedParams">
-            <p>Please enter valid embed settings:</p>
-            <form onsubmit="return false;">
-            <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local embed code</samp><br>
-            <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use CDN embed code</samp><br>
-            <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use secure embed code</samp><br>
-            <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
-            <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
-            <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
-            <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
-            <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
-                <option selected disabled>Select a plugin preset</option>
-            </select>
-            </form>
-
+<div id="customEmbedParams">
+        <p>Please enter valid embed settings:</p>
+        <form onsubmit="return false;">
+        <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local embed code</samp><br>
+        <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use CDN embed code</samp><br>
+        <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use secure embed code</samp><br>
+        <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
+        <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
+        <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
+        <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
+        <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
+            <option selected disabled>Select a plugin preset</option>
+        </select>
+        </form>
             <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
         </div>
-    </div><br>
+</div><br>
     <!--JSON Config DIV-->
 <div style="width:1125px; height: 410px; margin: 0 auto;">
     <p style="font-size: small; font-family: Arial;">Player's JSON config:</p>
