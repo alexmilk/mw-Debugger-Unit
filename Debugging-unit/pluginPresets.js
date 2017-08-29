@@ -13,7 +13,7 @@ var plugins = [
                 "trackCuePoints": false,
                 "debugMode": true, //Should enable debugMode for DoubleClick systems.
                 "adsManagerLoadedTimeout": 15000
-            },
+            }
         }
     } ,
     {
@@ -29,48 +29,50 @@ var plugins = [
         }
     } ,
     {
-        "displayName" : "volumeControl",
+        "displayName" : "Source Selector",
         "json" : {
-            "volumeControl":{
-                "showSlider": true,
-                "accessibleControls": false,
-                "accessibleVolumeChange": 0.1,
+            "sourceSelector": {
+                "switchOnResize": true,
+                "simpleFormat": true,
+                "displayMode": "sizebitrate",
                 "plugin": true
             }
         }
     } ,
     {
-        "displayName" : "logo",
+        "displayName" : "Closed Captions",
         "json" : {
-            "logo": {
-                "plugin" : true,
-                "width" : "0%",
-                "height" : "0%",
-                "includeInLayout" : false,
-                "img" : "http://cdnbakmi.kaltura.com/content/uiconf/ps/demos/kdp3/assets/coffee.png",
-                "href" : "http://kaltura.com",
-                "title" : "my logo"
+            "closedCaptions": {
+                "layout": "ontop",
+                "displayCaptions": false,
+                "fontFamily": "Helvetica,Arial",
+                "fontsize": 12,
+                "fontColor": "rgb(255, 255, 255)",
+                "bg": "rgb(0, 0, 0)",
+                "useGlow": false,
+                "glowBlur": 0,
+                "glowColor": "#ffffff",
+                "showEmbeddedCaptions": false,
+                "plugin": true,
+                "hideWhenEmpty": true,
+                "enableOptionsMenu": true
             }
         }
     },
     {
-        "displayName" : "playlistAPI",
+        "displayName" : "Chromecast",
         "json" : {
-            "playlistAPI": {
+            "chromecast": {
                 "plugin" : true,
-                "autoContinue" : true,
-                "autoPlay" : true,
-                "autoInsert" : true
+                "applicationId" : true,
+                "parent": "controlsContainer"
             }
         }
     },
     {
-        "displayName" : "playlist",
+        "displayName" : "KS",
         "json" : {
-            "playlist": {
-                "plugin" : true,
-                "includeInLayout" : true
-            }
+            "ks": "Enter KS String here"
         }
     }
-]
+];

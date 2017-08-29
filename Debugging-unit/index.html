@@ -176,11 +176,6 @@
             <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
             <input class="btn btn-primary btn-xs" onclick="setEntry();" type="submit"/>
         </form>
-        <h7 style="font-family: Arial; font-size: smaller;">KS Changer:</h7>
-        <form style="margin-top: 5px" id="formKs" onsubmit="return false;">
-            <input class="inputBox" style="width: 300px;" type="text" id="ksInput" placeholder="Input valid KS"/>
-            <input class="btn btn-primary btn-xs" type="submit" onclick="setKS();"/>
-        </form>
         <h7 style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</h7><br>
         <input class="inputBox" style="width: 300px;" type="text" oninput="showReloadWarning()" id="adTagId" />
         <button type="button" class="btn btn-primary btn-xs" style="margin: 0;" onclick=checkAdTag()>Check adtag
@@ -195,9 +190,9 @@
 <div id="customEmbedParams">
         <p>Please enter valid embed settings:</p>
         <form onsubmit="return false;">
-        <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use local embed code</samp><br>
-        <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use CDN embed code</samp><br>
-        <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px;"/><samp style="font-family: Arial; font-size: small; color: black;">Use secure embed code</samp><br>
+        <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 15px; margin-right: 3px;"/><span class="label label-primary">Use Local embed</span><br>
+        <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px;"/><span class="label label-primary">Use CDN embed</span><br>
+        <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px; margin-bottom: 15px"/><span class="label label-primary">Use Secure embed</span><br>
         <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
         <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
         <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
@@ -419,13 +414,12 @@
                 $("#appendStats").append("<h5>" + data + "</h5>");
             })};
     </script>
-
     <script>
         var runtimeFields = $("#appendJSON,#appendStats,#loadTime,#entryIdText,#uiconfText,#appVersion");
 
         //Custom embed code loader script.
         function buildPath() {
-            var partner = "_" + $('#partnerId').val();
+            var partner = $('#partnerId').val();
             if (partner.length <= 0) {
                 partner = "1666321";
             }
@@ -469,7 +463,7 @@
             mw.setConfig("debugTarget", "analyticsLog");
             mw.setConfig("autoScrollDebugTarget", true);
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
-                var partner = "_" + $('#partnerId').val();
+                var partner = $('#partnerId').val();
                 if ($('#partnerId').val().length <= 0) {
                     partner = "1666321";
                 }
