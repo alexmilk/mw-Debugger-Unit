@@ -44,7 +44,7 @@
                 <h4 class="modal-title">Please enter embed params:</h4>
             </div>
             <div class="modal-body">
-                <img src="images/station1.jpg" class="pull-right" style="width: 100px; height: 100px; margin-right: 80px;">
+                <img src="SVG-Loaders-master/svg-loaders/bars.svg" class="pull-right" style="width: 100px; height: 100px; margin-right: 80px;">
                 <table>
                     <colgroup>
                         <col span="1" style="background-color:white">
@@ -79,7 +79,7 @@
         </div>
     </div>
 </div>
-<div class="navbarTop">
+<nav class="navbar bg-primary" style="min-height:32px !important; top: 0 !important; border-radius: 0 !important;">
     <div style="float: left">
     <a class="dropbtn">Home</a>
     <div class="dropdown">
@@ -131,7 +131,7 @@
                 <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important; margin-top: 2px" onclick="vpaasSearch()">Search</button>
         </form>
     </div>
-</div>
+</nav>
 <!--Player main div-->
     <div id="topHeaderDiv">
     <div class="containerLeft">
@@ -604,6 +604,9 @@
                             $("#errorBar").slideDown(300);
                             $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
                         }});
+                    kdp.kBind('postSequenceStart', function () {
+                        alert("Playback Ended");
+                    });
                     $('#okError').click(function () {
                         $('#errorBar').slideUp(300);
                     });
