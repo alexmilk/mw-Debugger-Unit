@@ -2,7 +2,11 @@ body {
     margin: 0;
     background-color: white !important;
 }
-
+.center-block {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
 .inputBox {
     display: inline-block;
     -webkit-box-sizing: content-box;

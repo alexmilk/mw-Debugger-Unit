@@ -40,7 +40,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="showModalErr()"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Please enter embed params:</h4>
             </div>
             <div class="modal-body">
@@ -133,9 +133,17 @@
         </form>
     </div>
 </nav>
+<div class="alert alert-danger alert-dismissible center-block" id="noEmbedInput" role="alert" style="display: none; width: 450px; margin-top: 5px;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="window.location.reload()"><span aria-hidden="true">&times;</span></button>
+    No embed params were given, please reload the page.
+</div>
 <!--Player main div-->
 <div id="topHeaderDiv">
     <div class="containerLeft">
+        <div class="alert alert-danger alert-dismissible center-block" id="noEmbedInput" role="alert" style="display: none; width: 450px; margin-top: 5px;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            No embed params were given, please reload the page.
+        </div>
         <h2 id="pageTitle"></h2>
         <h6 id="uiconfText"></h6>
         <h6 id="entryIdText"></h6>
@@ -174,7 +182,7 @@
 
     <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
     <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
-        <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
+        <input class="inputBox" style="width: 300px;" type="text" id="adInput" placeholder="Input entry id"/>
         <input class="btn btn-primary btn-xs" onclick="setEntry();" type="submit"/>
     </form>
     <h7 style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</h7><br>
@@ -213,6 +221,9 @@
     </div>
     <script>
         //The mainBrain
+        showModalErr = () => {
+        $('#noEmbedInput').fadeIn(500);
+        };
         setEntry = () => {
             let input = document.getElementById("adInput").value;
             document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('changeMedia', {'entryId': input});
@@ -259,42 +270,39 @@
         };
         // Thumbnail remover
         let removeThumb = $("#removeThumb");
-        removeThumb.click(function () {
+        removeThumb.click(function() {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
             const playerThumb = $(playerContent).find("#kPlayer_ifp");
             if ($(playerThumb).css("visibility") == 'visible') {
                 document.getElementById('removeThumb').textContent = "Show thumbnail";
                 $(playerThumb).css("visibility", "hidden");
-            }
-            else {
+            } else {
                 $(playerThumb).css("visibility", "visible");
                 document.getElementById('removeThumb').textContent = "Hide thumbnail";
             }
         });
         //Play button remover
         let removePlay = $("#removePlay");
-        removePlay.click(function () {
+        removePlay.click(function() {
             const playerContent = $("#kPlayer_ifp_ifp").contents()[0];
             const playButton = $(playerContent).find(".largePlayBtn");
             if ($(playButton).css("display") == 'block') {
                 document.getElementById('removePlay').textContent = "Show play button";
                 $(playButton).css("display", "none");
-            }
-            else {
+            } else {
                 $(playButton).css("display", "block");
                 document.getElementById('removePlay').textContent = "Hide play button";
             }
         });
         //Player controls hide function
         let hideControls = $("#hideControls");
-        hideControls.click(function () {
+        hideControls.click(function() {
             const hideControls = $("#kPlayer_ifp_ifp").contents()[0];
             const controls = window.kPlayer_ifp_ifp.document.querySelector('.controlBarContainer');
             if (controls.style.display == "none") {
                 controls.style.display = "block";
                 document.getElementById('hideControls').textContent = "Hide controls bar";
-            }
-            else {
+            } else {
                 controls.style.display = "none";
                 document.getElementById('hideControls').textContent = "Show controls bar";
             }
@@ -310,7 +318,7 @@
             }
         };
         //Active source getter
-        getActiveSource = () =>{
+        getActiveSource = () => {
             const playerSource = document.kPlayer_ifp_ifp.kPlayer_ifp;
             const currentSource = playerSource.getSource();
             window.open(currentSource.src, '_blank');
@@ -327,7 +335,7 @@
         };
         //Source getter
         let getSource = $("#getSource");
-        getSource.click(function () {
+        getSource.click(function() {
             let playerSources = document.kPlayer_ifp_ifp.kPlayer_ifp.getSources();
             for (let i = 0; i < playerSources.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerSources[i], null, 2));
@@ -335,15 +343,16 @@
         });
         //Caption getter
         let getCaptions = $("#getCaptions");
-        getCaptions.click(function () {
+        getCaptions.click(function() {
             let playerCaptions = document.kPlayer_ifp_ifp.kPlayer_ifp.mediaElement.getTextTracks();
             for (let i = 0; i < playerCaptions.length; i++) {
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
             }
         });
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
-            $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>");});
+            $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>");
+        });
         //Preset ad selector for testing
         const adSlots = {
             inlinePreroll: {
@@ -375,16 +384,16 @@
                 "adTagUrl": null,
             }
         };
-        $(document).ready( function() {
+        $(document).ready(function() {
             let selectors = {
                 adSlot: $("#adSlotSelector"),
                 plugin: $("#pluginSelector")
             };
             for (let prop in adSlots) {
-                selectors.adSlot.append( "<option value= " + prop + ">" + adSlots[prop].slotType + "</option>" )
+                selectors.adSlot.append("<option value= " + prop + ">" + adSlots[prop].slotType + "</option>")
             }
             for (let prop in plugins) {
-                selectors.plugin.append( "<option value= " + prop + ">" + plugins[prop].displayName + "</option>" )
+                selectors.plugin.append("<option value= " + prop + ">" + plugins[prop].displayName + "</option>")
             }
         });
         //Ad tag appender
@@ -410,10 +419,11 @@
         showReloadWarning = () => $("#updateNotification").fadeIn(500);
         //Open tinyUrl button
         tiny = () => {
-            let url = "http://tinyurl.com/api-create.php?url="+$(location).attr('href')+$(location).attr('search');
-            $.get(url, function( data ) {
+            let url = "http://tinyurl.com/api-create.php?url=" + $(location).attr('href') + $(location).attr('search');
+            $.get(url, function(data) {
                 $("#appendStats").append("<h5>" + data + "</h5>");
-            })};
+            })
+        };
     </script>
     <script>
         var runtimeFields = $("#appendJSON,#appendStats,#loadTime,#entryIdText,#uiconfText,#appVersion");
@@ -430,8 +440,8 @@
             }
             var path;
             var radioInputs = $('#selectLocal,#selectCdn,#selectSecure');
-            for (var i = 0; i < radioInputs.length; i++){
-                if (radioInputs[i].checked){
+            for (var i = 0; i < radioInputs.length; i++) {
+                if (radioInputs[i].checked) {
                     path = radioInputs[i].id;
                 }
             }
@@ -447,9 +457,9 @@
                     break;
                 case "selectSecure":
                     endPoint = 'https://cdnsecakmi.kaltura.com/p/' + partner + '/sp/' + partner +
-                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner ;
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner;
             }
-            $.getScript(endPoint, function (data, textStatus, jqxhr) {
+            $.getScript(endPoint, function(data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                     reembedPlayer();
                 } else {
@@ -482,9 +492,9 @@
             var str = $('.uivarsOverride').val();
             str = str.split("\n").join('');
             var myJson;
-            try{
+            try {
                 myJson = str ? $.parseJSON(str) : {};
-            } catch(error){
+            } catch (error) {
                 alert('Please validate your JSON');
                 return;
             }
@@ -501,7 +511,7 @@
     </script>
     <!--Main embed script-->
     <script>
-        let embedWidget = function () {
+        let embedWidget = function() {
             //Player path defaults
             let partner = $('#partnerPrototype').val();
             if (partner.length <= 0) {
@@ -517,8 +527,8 @@
             }
             let path;
             let radioInputs = $('#useCdnEmbed,#useLocalEmbed');
-            for (let i = 0; i < radioInputs.length; i++){
-                if (radioInputs[i].checked){
+            for (let i = 0; i < radioInputs.length; i++) {
+                if (radioInputs[i].checked) {
                     path = radioInputs[i].id;
                 }
             }
@@ -533,13 +543,14 @@
                         '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner;
                     break;
             }
-            $.getScript(endPoint, function (data, textStatus, jqxhr) {
+            $.getScript(endPoint, function(data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
                     embed();
                 } else {
                     alert("Script failed to load. Cannot render player :(");
                 }
-            })};
+            })
+        };
         let embed = function (){
             //Embed defaults
             let partnerPrototype = $('#partnerPrototype').val();
