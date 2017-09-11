@@ -81,59 +81,60 @@
 </div>
 <nav class="navbar bg-primary" style="min-height:32px !important; top: 0 !important; border-radius: 0 !important;">
     <div style="float: left">
-    <a class="dropbtn">Home</a>
-    <div class="dropdown">
-    <button class="dropbtn">Player Functions</button>
-            <div class="dropdown-content">
-        <a onclick="buildPath();cleanPreviousErrors();">Reload player</a>
-        <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
-        <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
-        <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
-        <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
-            </div>
-    </div>
-    <div class="dropdown">
-        <button class="dropbtn">Video Debugging Tools</button>
-            <div class="dropdown-content">
-        <a href="#">Get video aspect ratio</a>
-        <a href="https://shaka-player-demo.appspot.com/demo/" target="_blank">Standalone Dash Shaka player</a>
-        <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
-        <a href="http://players.akamai.com/hds/" target="_blank">Standalone Akamai HDS player</a>
-        <a href="http://players.akamai.com/hls/" target="_blank">Standalone Akamai HLS player</a>
-            </div>
-    </div>
+        <a class="dropbtn">Home</a>
         <div class="dropdown">
-        <button class="dropbtn">Ad Debugging Tools</button>
+            <button class="dropbtn">Player Functions</button>
             <div class="dropdown-content">
-        <a href="#" id="testOnVast" onclick="goToVast()">Test on Google VAST inspector</a>
-        <a href="https://i.loopme.me/html/vpaid/test-page.html" target="_blank">VPAID ad tester</a>
-        <a href="http://tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
-        <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
-        <a href="http://www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
-        <a href="https://www.spotx.tv/tag-generator/" target="_blank">SPOTX Tag Generator</a>
+                <a onclick="buildPath();cleanPreviousErrors();">Reload player</a>
+                <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
+                <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
+                <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
+                <a onclick="getGoogleAnalytics()">Track Google Analytics</a>        <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
+
             </div>
-    </div>
+        </div>
         <div class="dropdown">
-        <button class="dropbtn">Commands</button>
+            <button class="dropbtn">Video Debugging Tools</button>
             <div class="dropdown-content">
-        <a href="#" id="cleanMedia()">Unload video asset</a>
-        <a href="#" id="removeThumb">Remove Thumbnail</a>
-        <a href="#" id="removePlay">Remove play button</a>
-        <a href="#" id="hideControls">Hide controls bar</a>
+                <a href="#">Get video aspect ratio</a>
+                <a href="https://shaka-player-demo.appspot.com/demo/" target="_blank">Standalone Dash Shaka player</a>
+                <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
+                <a href="http://players.akamai.com/hds/" target="_blank">Standalone Akamai HDS player</a>
+                <a href="http://players.akamai.com/hls/" target="_blank">Standalone Akamai HLS player</a>
             </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Ad Debugging Tools</button>
+            <div class="dropdown-content">
+                <a href="#" id="testOnVast" onclick="goToVast()">Test on Google VAST inspector</a>
+                <a href="https://i.loopme.me/html/vpaid/test-page.html" target="_blank">VPAID ad tester</a>
+                <a href="http://tagvalidator.videohub.tv/?adtag=&playerType=jwPlayer&playerSize=640x360&adtagType=&adChoicesOverlay=off" target="_blank">VideoHub ad tester</a>
+                <a href="https://video-dev.github.io/hls.js/demo/" target="_blank">Standalone HLS.JS player</a>
+                <a href="http://www.zedo.com/vastvalidator/" target="_blank">Zedo ad tester</a>
+                <a href="https://www.spotx.tv/tag-generator/" target="_blank">SPOTX Tag Generator</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Commands</button>
+            <div class="dropdown-content">
+                <a href="#" id="cleanMedia()">Unload video asset</a>
+                <a href="#" id="removeThumb">Remove Thumbnail</a>
+                <a href="#" id="removePlay">Remove play button</a>
+                <a href="#" id="hideControls">Hide controls bar</a>
+            </div>
+        </div>
     </div>
-</div>
     <div style="float: right; height: 25px; width: 600px; padding-right: 20px; padding-top: 2px">
         <form class="form-inline pull-right">
             <div class="form-group">
                 <input type="search" class="form-control input-sm" style="height: 19px !important;" id="searchInput" placeholder="Search VPaaS">
             </div>
-                <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important; margin-top: 2px" onclick="vpaasSearch()">Search</button>
+            <button type="submit" class="btn btn-default btn-xs" style="height: 19px !important; margin-top: 2px" onclick="vpaasSearch()">Search</button>
         </form>
     </div>
 </nav>
 <!--Player main div-->
-    <div id="topHeaderDiv">
+<div id="topHeaderDiv">
     <div class="containerLeft">
         <h2 id="pageTitle"></h2>
         <h6 id="uiconfText"></h6>
@@ -141,27 +142,27 @@
         <h6 id="loadTime"></h6>
         <h6 id="appVersion"></h6>
     </div>
-<div class="containerRight">
-    <!--QRCode Generator - Google Charts-->
-    <p><img src="" id="generateMe" /></p>
+    <div class="containerRight">
+        <!--QRCode Generator - Google Charts-->
+        <p><img src="" id="generateMe" /></p>
         <script type="text/javascript">
-        let ele = document.getElementById("generateMe");
-        ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
+            let ele = document.getElementById("generateMe");
+            ele.src = "https://chart.googleapis.com/chart?cht=qr&chs=130x130&chl=" + document.location.href;
         </script>
     </div>
 </div>
-    <br>
-        <!--The main section Player + Stats-->
-    <div style="width:1125px; height: 320px; margin: auto;">
-        <!--Main player DIV-->
-        <div id="kPlayer_ifp" itemprop="video" itemscope></div>
-        <!--Small analytics log DIV-->
-        <pre id="appendStats"></pre>
-        <div style="clear: both;"></div>
-        <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats" onclick="cleanMonitor()">Clear monitor</button>
-    </div>
-    <!--Control panel & buttons DIV-->
+<br>
+<!--The main section Player + Stats-->
+<div style="width:1125px; height: 320px; margin: auto;">
+    <!--Main player DIV-->
+    <div id="kPlayer_ifp" itemprop="video" itemscope></div>
+    <!--Small analytics log DIV-->
+    <pre id="appendStats"></pre>
     <div style="clear: both;"></div>
+    <button class="btn btn-basic btn-xs pull-right" style="margin: 5px; margin-right: 0" id="clearStats" onclick="cleanMonitor()">Clear monitor</button>
+</div>
+<!--Control panel & buttons DIV-->
+<div style="clear: both;"></div>
 <div id="mainControlDiv">
     <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
     <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
@@ -171,45 +172,45 @@
     <button type="button" id="getTiny" class="btn btn-primary btn-xs" onclick="tiny()">get TinyUrl</button>
     <button type="button" onclick="buildPath();cleanPreviousErrors();" class="btn btn-primary btn-xs" style="float: left;">Reload player</button>
 
-        <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
-        <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
-            <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
-            <input class="btn btn-primary btn-xs" onclick="setEntry();" type="submit"/>
-        </form>
-        <h7 style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</h7><br>
-        <input class="inputBox" style="width: 300px;" type="text" oninput="showReloadWarning()" id="adTagId" />
-        <button type="button" class="btn btn-primary btn-xs" style="margin: 0;" onclick=checkAdTag()>Check adtag
-        </button>
-        <select id="adSlotSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendSlot(event)">
-            <option selected disabled>Select sample ad tag</option>
-        </select>
-        <div class="alert alert-warning alert-dismissible" id="updateNotification" role="alert" style="display: none; width: 450px; margin-top: 5px;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            Don't forget to reload the player after making any changes.
-        </div>
-<div id="customEmbedParams">
+    <br><h7 style="font-family: Arial; font-size: smaller;">Entry ID changer:</h7>
+    <form style="margin-top: 5px" id="formEntry" onsubmit="return false;">
+        <input class="inputBox" type="text" id="adInput" placeholder="Input entry id"/>
+        <input class="btn btn-primary btn-xs" onclick="setEntry();" type="submit"/>
+    </form>
+    <h7 style="font-family: Arial; font-size: smaller; margin-bottom: 5px;">DoubleClick ad tag:</h7><br>
+    <input class="inputBox" style="width: 300px;" type="text" oninput="showReloadWarning()" id="adTagId" />
+    <button type="button" class="btn btn-primary btn-xs" style="margin: 0;" onclick=checkAdTag()>Check adtag
+    </button>
+    <select id="adSlotSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendSlot(event)">
+        <option selected disabled>Select sample ad tag</option>
+    </select>
+    <div class="alert alert-warning alert-dismissible" id="updateNotification" role="alert" style="display: none; width: 450px; margin-top: 5px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Don't forget to reload the player after making any changes.
+    </div>
+    <div id="customEmbedParams">
         <p>Please enter valid embed settings:</p>
         <form onsubmit="return false;">
-        <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 15px; margin-right: 3px;"/><span class="label label-primary">Use Local embed</span><br>
-        <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px;"/><span class="label label-primary">Use CDN embed</span><br>
-        <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px; margin-bottom: 15px"/><span class="label label-primary">Use Secure embed</span><br>
-        <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
-        <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
-        <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
-        <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
-        <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
-            <option selected disabled>Select a plugin preset</option>
-        </select>
+            <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 15px; margin-right: 3px;"/><span class="label label-primary">Use Local embed</span><br>
+            <input id="selectCdn" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px;"/><span class="label label-primary">Use CDN embed</span><br>
+            <input id="selectSecure" type="radio" name="ib" style="width: 16px; height: 16px; margin-right: 3px; margin-bottom: 15px"/><span class="label label-primary">Use Secure embed</span><br>
+            <input id="partnerId" class="inputBox" type="text" style="margin-bottom: 5px;" placeholder="Partner Id"/><br>
+            <input id="uiconfId" class="inputBox" style="margin-bottom: 5px;" placeholder="Player Id"/><br>
+            <input id="entryId" class="inputBox" type="text" placeholder="Entry Id"/>
+            <input onclick="buildPath()" class="btn btn-primary btn-xs" style="width: 100px;" type="submit"/>
+            <select id="pluginSelector" style="width: 200px !important; display: inline;" class="form-control bg-primary" name="adPresetSelector" size="1" onchange="appendPlugin(event)">
+                <option selected disabled>Select a plugin preset</option>
+            </select>
         </form>
-            <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
-        </div>
+        <textarea class="uivarsOverride" placeholder="Add valid flashvars:"></textarea>
+    </div>
 </div><br>
-    <!--JSON Config DIV-->
+<!--JSON Config DIV-->
 <div style="width:1125px; height: 410px; margin: 0 auto;">
     <p style="font-size: small; font-family: Arial;">Player's JSON config:</p>
     <pre id="appendJSON"></pre>
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
-</div>
+    </div>
     <script>
         //The mainBrain
         setEntry = () => {
@@ -446,7 +447,7 @@
                     break;
                 case "selectSecure":
                     endPoint = 'https://cdnsecakmi.kaltura.com/p/' + partner + '/sp/' + partner +
-                    '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner ;
+                        '00/embedIframeJs/uiconf_id/' + uiconf + '/partner_id/' + partner ;
             }
             $.getScript(endPoint, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
@@ -463,30 +464,26 @@
             mw.setConfig("debugTarget", "analyticsLog");
             mw.setConfig("autoScrollDebugTarget", true);
             mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
-                var partner = $('#partnerId').val();
-                if ($('#partnerId').val().length <= 0) {
-                    partner = "1666321";
-                }
-                var uiconf = $('#uiconfId').val();
-                if ($('#uiconfId').val().length <= 0) {
-                    uiconf = "39120681";
-                }
-                var entry = $('#entryId').val();
-                if ($('#entryId').val().length <= 0) {
-                    entry = "0_kjb4gz27";
-                }
-                runtimeFields.text('');
-                $("#errorBar").slideUp(300);
-                cleanPreviousErrors();
+            var partner = $('#partnerId').val();
+            if ($('#partnerId').val().length <= 0) {
+                partner = "1666321";
+            }
+            var uiconf = $('#uiconfId').val();
+            if ($('#uiconfId').val().length <= 0) {
+                uiconf = "39120681";
+            }
+            var entry = $('#entryId').val();
+            if ($('#entryId').val().length <= 0) {
+                entry = "0_kjb4gz27";
+            }
+            runtimeFields.text('');
+            $("#errorBar").slideUp(300);
+            cleanPreviousErrors();
             var str = $('.uivarsOverride').val();
             str = str.split("\n").join('');
             var myJson;
             try{
-                if(str){
-                 myJson = $.parseJSON(str);
-                } else {
-                    myJson = {};
-                }
+                myJson = str ? $.parseJSON(str) : {};
             } catch(error){
                 alert('Please validate your JSON');
                 return;
@@ -504,28 +501,28 @@
     </script>
     <!--Main embed script-->
     <script>
-        var embedWidget = function () {
-        //Player path defaults
-            var partner = $('#partnerPrototype').val();
+        let embedWidget = function () {
+            //Player path defaults
+            let partner = $('#partnerPrototype').val();
             if (partner.length <= 0) {
                 partner = "1666321";
             }
-            var uiconf = $('#playerPrototype').val();
+            let uiconf = $('#playerPrototype').val();
             if (uiconf.length <= 0) {
                 uiconf = "39120681";
             }
-            var entryId = $('#entryPrototype').val();
+            let entryId = $('#entryPrototype').val();
             if (entryId.length <= 0) {
                 entryId = "0_kjb4gz27";
             }
-            var path;
-            var radioInputs = $('#useCdnEmbed,#useLocalEmbed');
-            for (var i = 0; i < radioInputs.length; i++){
+            let path;
+            let radioInputs = $('#useCdnEmbed,#useLocalEmbed');
+            for (let i = 0; i < radioInputs.length; i++){
                 if (radioInputs[i].checked){
                     path = radioInputs[i].id;
                 }
             }
-            var endPoint;
+            let endPoint;
             switch (path) {
                 case "useLocalEmbed":
                     endPoint = '/mwEmbed/mwEmbedLoader.php/p/' + partner + '/sp/' + partner +
@@ -538,25 +535,25 @@
             }
             $.getScript(endPoint, function (data, textStatus, jqxhr) {
                 if (jqxhr.status === 200) {
-                        embed();
+                    embed();
                 } else {
                     alert("Script failed to load. Cannot render player :(");
                 }
             })};
-            var embed = function (){
-                //Embed defaults
-                var partnerPrototype = $('#partnerPrototype').val();
-                if (partnerPrototype.length <= 0) {
-                    partnerPrototype = "1666321";
-                }
-                var playerPrototype = $('#playerPrototype').val();
-                if (playerPrototype.length <= 0) {
-                    playerPrototype = "39120681";
-                }
-                var entryPrototype = $('#entryPrototype').val();
-                if (entryPrototype.length <= 0) {
-                    entryPrototype = "0_kjb4gz27";
-                }
+        let embed = function (){
+            //Embed defaults
+            let partnerPrototype = $('#partnerPrototype').val();
+            if (partnerPrototype.length <= 0) {
+                partnerPrototype = "1666321";
+            }
+            let playerPrototype = $('#playerPrototype').val();
+            if (playerPrototype.length <= 0) {
+                playerPrototype = "39120681";
+            }
+            let entryPrototype = $('#entryPrototype').val();
+            if (entryPrototype.length <= 0) {
+                entryPrototype = "0_kjb4gz27";
+            }
             cleanPreviousErrors();
             $("#errorBar").slideUp(300);
             $("#updateNotification").fadeOut(500);
@@ -577,44 +574,44 @@
                 "cache_st": Date.now(),
                 "entry_id": entryPrototype
             });
-                //kBinds and other functions
-                kWidget.addReadyCallback(function (playerId) {
-                    let kdp = document.getElementById(playerId);
-                    kdp.kBind('playerReady', function () {
-                        let runtimes = {
-                            pageTitle: $('#pageTitle'),
-                            entryIdField: $("#entryIdText"),
-                            uiconfIdField: $("#uiconfText"),
-                            loadTimeField: $("#loadTime"),
-                            appVersionField: $("#appVersion"),
-                            loadedTime: window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart
-                        };
-                            runtimes.pageTitle.append(kdp.evaluate("{mediaProxy.entry.name}"));
-                            runtimes.entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
-                            runtimes.uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
-                            runtimes.loadTimeField.prepend("Page loaded in " + runtimes.loadedTime + " milliseconds");
-                            runtimes.appVersionField.append("User agent: " + clientInformation.appVersion);
-                            let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
-                            $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
-                            $(".mw-debug-info").append(playerPlugins.debugInfo);
-                        });
-
-                    kdp.kBind('playerError', function (errorEvent) {
-                        if($("#errorBar h4").text().length === 0) {
-                            $("#errorBar").slideDown(300);
-                            $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
-                        }});
-                    kdp.kBind('postSequenceStart', function () {
-                        alert("Playback Ended");
-                    });
-                    $('#okError').click(function () {
-                        $('#errorBar').slideUp(300);
-                    });
-                    kdp.kBind('entryReady', function () {
-                        cleanPreviousErrors();
-                    });
+            //kBinds and other functions
+            kWidget.addReadyCallback(function (playerId) {
+                let kdp = document.getElementById(playerId);
+                kdp.kBind('playerReady', function () {
+                    let runtimes = {
+                        pageTitle: $('#pageTitle'),
+                        entryIdField: $("#entryIdText"),
+                        uiconfIdField: $("#uiconfText"),
+                        loadTimeField: $("#loadTime"),
+                        appVersionField: $("#appVersion"),
+                        loadedTime: window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart
+                    };
+                    runtimes.pageTitle.append(kdp.evaluate("{mediaProxy.entry.name}"));
+                    runtimes.entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
+                    runtimes.uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
+                    runtimes.loadTimeField.prepend("Page loaded in " + runtimes.loadedTime + " milliseconds");
+                    runtimes.appVersionField.append("User agent: " + clientInformation.appVersion);
+                    let playerPlugins = document.kPlayer_ifp_ifp.kalturaIframePackageData.playerConfig.plugins;
+                    $("#appendJSON").append(JSON.stringify(playerPlugins, null, 2));
+                    $(".mw-debug-info").append(playerPlugins.debugInfo);
                 });
-            };
+
+                kdp.kBind('playerError', function (errorEvent) {
+                    if($("#errorBar h4").text().length === 0) {
+                        $("#errorBar").slideDown(300);
+                        $("#errorBar h4").append("An error has been logged on the player - " + errorEvent.message);
+                    }});
+                kdp.kBind('postSequenceStart', function () {
+                    alert("Playback Ended");
+                });
+                $('#okError').click(function () {
+                    $('#errorBar').slideUp(300);
+                });
+                kdp.kBind('entryReady', function () {
+                    cleanPreviousErrors();
+                });
+            });
+        };
     </script>
 </div>
 
