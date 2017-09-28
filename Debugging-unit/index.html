@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 
 <!-- mwDebuggerUnit for the Kaltura player -->
-<!-- Version 1.0 -->
+<!-- Version 2.0 -->
 <!-- Copyright(c) 2017 Alex Milkis <alex.milkis@kaltura.com> -->
 <!-- MIT Licensed. http://www.opensource.org/licenses/mit-license.php -->
 <!-- http://corp.kaltura.com -->
@@ -12,13 +12,13 @@
     <title>Kaltura Debugging Station</title>
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://jsoverson.github.io/jquery.pulse.js/jquery.pulse.js"></script>
-    <link rel="stylesheet" href="css/mainStyles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="pluginPresets.js"></script>
+    <script src="js/plugins.js"></script>
 </head>
 
 <body>
@@ -52,15 +52,15 @@
                     </colgroup>
                     <tr>
                         <td><h5>Partner Id:</h5></td>
-                        <td><input class='form-control' id="partnerPrototype" style="margin-left: -20px;" type="text"/></td>
+                        <td><input class='form-control' id="partnerPrototype" style="margin-left: -20px;" type="text" placeholder="1666321"/></td>
                     </tr>
                     <tr>
                         <td><h5>Player Id:</h5></td>
-                        <td><input class='form-control' id="playerPrototype" style="margin-left: -20px;" type="text"/></td>
+                        <td><input class='form-control' id="playerPrototype" style="margin-left: -20px;" type="text" placeholder="39120681"/></td>
                     </tr>
                     <tr>
                         <td><h5>Entry Id:</h5></td>
-                        <td><input class='form-control' id="entryPrototype" style="margin-left: -20px;" type="text"/></td>
+                        <td><input class='form-control' id="entryPrototype" style="margin-left: -20px;" type="text" placeholder="0_kjb4gz27"/></td>
                     </tr>
                     <tr>
                         <td><input type=radio name="options" style="width: 16px; height: 15px;" id="useLocalEmbed" checked>
@@ -172,7 +172,7 @@
 <!--Control panel & buttons DIV-->
 <div style="clear: both;"></div>
 <div id="mainControlDiv">
-    <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Change Embed code</button>
+    <button type="button" onclick="changeEmbed()" class="btn btn-primary btn-xs" style="float: left;">Customize Embed code</button>
     <button type="button" class="btn btn-primary btn-xs" onclick=doPlay()>Force Play</button>
     <button type="button" class="btn btn-primary btn-xs" onclick=doStop()>Force Stop</button>
     <button type="button" id="getSource" class="btn btn-primary btn-xs">get Sources</button>
@@ -514,16 +514,16 @@
         let embedWidget = function() {
             //Player path defaults
             let partner = $('#partnerPrototype').val();
-            if (partner.length <= 0) {
-                partner = "1666321";
+            if (partner.length === 0) {
+                partner = $('#partnerPrototype').attr('placeholder');
             }
             let uiconf = $('#playerPrototype').val();
-            if (uiconf.length <= 0) {
-                uiconf = "39120681";
+            if (uiconf.length === 0) {
+                uiconf = $('#playerPrototype').attr('placeholder');
             }
             let entryId = $('#entryPrototype').val();
-            if (entryId.length <= 0) {
-                entryId = "0_kjb4gz27";
+            if (entryId.length === 0) {
+                entryId = $('entryPrototype').attr('placeholder');
             }
             let path;
             let radioInputs = $('#useCdnEmbed,#useLocalEmbed');
@@ -597,7 +597,7 @@
                         appVersionField: $("#appVersion"),
                         loadedTime: window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart
                     };
-                    runtimes.pageTitle.append(kdp.evaluate("{mediaProxy.entry.name}"));
+                    runtimes.pageTitle.html(kdp.evaluate("{mediaProxy.entry.name}"));
                     runtimes.entryIdField.append(kdp.evaluate("Entry id: " + "{mediaProxy.entry.id}"));
                     runtimes.uiconfIdField.append(kdp.evaluate("Player id: " + "{configProxy.kw.uiConfId}"));
                     runtimes.loadTimeField.prepend("Page loaded in " + runtimes.loadedTime + " milliseconds");
