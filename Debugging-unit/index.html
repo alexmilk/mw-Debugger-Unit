@@ -32,7 +32,7 @@
     }
     /*If we want to disable the submit button until we have valid user input then execute the following -
     1. Add event listener to the input of all fields and check for length
-    2. If length criteria is met then remove the 'disbled' attribute from the submit button'
+    2. If length criteria is met then remove the 'disabled' attribute from the submit button'
     3. If criteria is not met, leave the button disabled.
     */
 </script>
@@ -79,7 +79,7 @@
                 </table>
             </div>
             <div class="modal-footer"><h5 class="pull-left">Leaving blank values will load defaults.</h5>
-                <button id=submitButton' type="button" class="btn btn-primary" disabled onclick="embedWidget();hideModal()">Submit</button>
+                <button id=submitButton' type="button" class="btn btn-primary" onclick="embedWidget();hideModal()">Submit</button>
             </div>
         </div>
     </div>
@@ -94,8 +94,8 @@
                 <a href="#" id="getActiveSource" onclick="getActiveSource()">Download active flavor</a>
                 <a onclick="getActiveBitrate()">Get Current Bitrate (Chrome/Firefox Only)</a>
                 <a onclick="getYouboraAnalytics()">Track Youbora Analytics</a>
-                <a onclick="getGoogleAnalytics()">Track Google Analytics</a>        <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
-
+                <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
+                <a onclick="getGoogleAnalytics()">Track Google Analytics</a>
             </div>
         </div>
         <div class="dropdown">
@@ -225,7 +225,6 @@
     <div id="analyticsLog" style="float: right; box-sizing: border-box;">
     </div>
     <script>
-        //The mainBrain
         showModalErr = () => {
         $('#noEmbedInput').fadeIn(500);
         };
@@ -235,10 +234,12 @@
             cleanPreviousErrors();
             runtimeFields.empty();
         };
+        //The VPAAS search function.
         vpaasSearch = () => {
             let searchTerm = $('#searchInput').val();
             window.open("https://vpaas.kaltura.com/search/#stq=" + searchTerm + "&stp=1")
         };
+        //The player KS setter.
         setKS = () => {
             runtimeFields.empty();
             kWidget.addReadyCallback(function (playerId) {
@@ -249,6 +250,7 @@
             });
             cleanPreviousErrors();
         };
+        //Simple player commands.
         doPlay = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doPlay');
         doStop = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification('doStop');
         cleanMedia = () => document.kPlayer_ifp_ifp.kPlayer_ifp.sendNotification("cleanMedia");
@@ -354,6 +356,7 @@
                 parent.document.getElementById('appendStats').append(JSON.stringify(playerCaptions[i], null, 2));
             }
         });
+        //Self executing function that fades elements in.
         $(document).ready(function() {
             $('#topHeaderDiv, #appendStats, #kPlayer_ifp, #mainControlDiv').fadeIn(400);
             $('#appendStats').append("<h5 style='color: white;'>" + "Monitor is ready." + "</h5>");
@@ -389,6 +392,7 @@
                 "adTagUrl": null,
             }
         };
+        //Self executing function that populates the available ad tags and plugins for the custom embed function.
         $(document).ready(function() {
             let selectors = {
                 adSlot: $("#adSlotSelector"),
@@ -516,7 +520,7 @@
     </script>
     <!--Main embed script-->
     <script>
-        //The initial modal embed function.
+        //The initial modal embed function, wrapped in var to prevent auto execution.
         let embedWidget = function() {
             //Player path defaults
             let partner = $('#partnerPrototype').val();
