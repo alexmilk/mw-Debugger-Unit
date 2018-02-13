@@ -81,7 +81,8 @@ body {
 }
 /* Links inside the navbar */
 #customEmbedParams {
-    margin-top: auto;
+    width: 605px;
+    margin-top: 15px;
     text-align: left;
     /*padding: 10px;*/
     display: none;

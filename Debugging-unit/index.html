@@ -201,7 +201,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         Don't forget to reload the player after making any changes.
     </div>
-    <div id="customEmbedParams">
+    <div id="customEmbedParams" class="well">
         <p>Please enter valid embed settings:</p>
         <form onsubmit="return false;">
             <input id="selectLocal" type="radio" name="ib" checked style="width: 16px; height: 15px; margin-right: 3px;"/><span class="label label-primary">Use Local embed</span><br>
@@ -263,10 +263,10 @@
         //Entry changer
         changeEmbed = () => {
             if ($('#customEmbedParams').css("display") == "none") {
-                $("#customEmbedParams").slideDown(500);
+                $("#customEmbedParams").slideToggle(500);
             }
             else {
-                $("#customEmbedParams").slideUp(500);
+                $("#customEmbedParams").slideToggle(500);
             }
         };
         cleanPreviousErrors = () => {
@@ -499,7 +499,7 @@
             $("#errorBar").slideUp(300);
             cleanPreviousErrors();
             var str = $('.uivarsOverride').val();
-            str = str.split("\n").join('');
+//            str = str.split("\n").join('');
             var myJson;
             try {
                 myJson = str ? $.parseJSON(str) : {};
